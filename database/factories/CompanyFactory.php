@@ -13,9 +13,9 @@ class CompanyFactory extends Factory
     public function definition()
     {
         return [
+            'name' => $this->faker->unique()->company,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'name' => $this->faker->name(),
         ];
     }
 }

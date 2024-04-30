@@ -13,9 +13,9 @@ class PaymentMethodFactory extends Factory
     public function definition()
     {
         return [
+            'name' => $this->faker->unique()->word(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'name' => $this->faker->name(),
         ];
     }
 }

@@ -15,7 +15,15 @@ class PaymentGenericStatusFactory extends Factory
         return [
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'name' => $this->faker->name(),
+            'name' => $this->faker->unique()->randomElement([
+                'pending',
+                'completed',
+                'failed',
+                'cancelled',
+                'refunded',
+                'disputed'
+                ]
+            ),
         ];
     }
 }

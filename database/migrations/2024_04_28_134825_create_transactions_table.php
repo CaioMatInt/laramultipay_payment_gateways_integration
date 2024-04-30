@@ -15,9 +15,9 @@ return new class extends Migration {
             $table->foreignIdFor(Payment::class);
             $table->foreignIdFor(PaymentGatewayTransactionStatus::class);
             $table->foreignIdFor(Company::class);
-            $table->string('gateway_transaction_id');
-            $table->string('gateway_status');
-            $table->string('response_code');
+            $table->string('gateway_transaction_id')->nullable();
+            $table->string('gateway_status')->nullable();
+            $table->string('response_code')->nullable();
             $table->date('date');
             $table->softDeletes();
             $table->timestamps();

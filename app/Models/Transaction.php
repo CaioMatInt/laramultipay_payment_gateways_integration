@@ -19,11 +19,6 @@ class Transaction extends Model
         'payment_id',
     ];
 
-    protected function payment(): BelongsTo
-    {
-        return $this->belongsTo(Payment::class);
-    }
-
     protected function casts()
     {
         return [
@@ -31,12 +26,17 @@ class Transaction extends Model
         ];
     }
 
-    public function gatewayTransactionStatus(): BelongsTo
+    protected function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class);
+    }
+
+    protected function gatewayTransactionStatus(): BelongsTo
     {
         return $this->belongsTo(PaymentGatewayTransactionStatus::class);
     }
 
-    public function company(): BelongsTo
+    protected function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }

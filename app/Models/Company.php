@@ -15,22 +15,22 @@ class Company extends Model
         'name',
     ];
 
-    public function users(): HasMany
+    protected function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function paymentGatewayKeys(): HasMany
+    protected function paymentGatewayKeys(): HasMany
     {
         return $this->hasMany(PaymentGatewayKey::class);
     }
 
-    public function payments(): HasMany
+    protected function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
 
-    public function transactions(): HasMany
+    protected function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }

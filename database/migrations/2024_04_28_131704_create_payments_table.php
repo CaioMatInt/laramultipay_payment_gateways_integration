@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Models\Company;
 use App\Models\PaymentGenericStatus;
 use App\Models\PaymentMethod;
@@ -16,7 +17,7 @@ return new class extends Migration {
             $table->integer('amount');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Company::class);
-            $table->enum('currency', ['USD', 'EUR', 'GBP', 'BRL']);
+            $table->enum('currency', PaymentCurrencyEnum::values());
             $table->foreignIdFor(PaymentGenericStatus::class);
             $table->foreignIdFor(PaymentMethod::class);
             $table->softDeletes();

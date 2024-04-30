@@ -13,7 +13,7 @@ return new class extends Migration {
     {
         Schema::create('payment_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Payment::class);
+            /*$table->foreignIdFor(Payment::class);
             $table->enum('event_type', ['status_change', 'error']);
             $table->unsignedInteger('previous_status_id');
             $table->foreign('previous_status_id')->references('id')->on('payment_generic_statuses');
@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->text('details')->nullable();
             $table->date('date');
             $table->softDeletes();
-            $table->timestamps();
+            $table->timestamps();*/
         });
     }
 

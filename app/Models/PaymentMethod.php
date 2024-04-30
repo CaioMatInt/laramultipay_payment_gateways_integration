@@ -16,7 +16,7 @@ class PaymentMethod extends Model
         'slug'
     ];
 
-    public function payments(): HasMany
+    protected function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'payment_method_id');
     }

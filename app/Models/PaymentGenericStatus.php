@@ -15,12 +15,12 @@ class PaymentGenericStatus extends Model
         'name',
     ];
 
-    public function payments(): HasMany
+    protected function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
 
-    public function gatewayTransactionStatuses(): HasMany
+    protected function gatewayTransactionStatuses(): HasMany
     {
         return $this->hasMany(PaymentGatewayTransactionStatus::class);
     }
