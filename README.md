@@ -2,7 +2,7 @@
 
 Attention: This project is in early development stage.
 
-# Challenge description
+# Description
 
 This project integrates multiple payment platforms, allowing for the processing of different payment methods. It supports gateways like Stripe, Gerencianet, Flutterwave, and Authorize.net, and handles payments via international credit cards, PIX (Brazil), and boleto (Brazil). 
 
