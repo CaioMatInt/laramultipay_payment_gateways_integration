@@ -11,13 +11,7 @@ class PaymentLogsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'id' => $this->id,
-            'event_type' => $this->event_type,
-            'details' => $this->details,
-
-            'payment' => new PaymentResource($this->whenLoaded('payment')),
+            //'payment' => new PaymentResource($this->whenLoaded('payment')),
         ];
     }
 }

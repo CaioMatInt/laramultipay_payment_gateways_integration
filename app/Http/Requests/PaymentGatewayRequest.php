@@ -10,7 +10,6 @@ class PaymentGatewayRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'slug' => ['required'],
         ];
     }
 

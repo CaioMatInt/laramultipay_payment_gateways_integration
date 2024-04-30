@@ -41,11 +41,6 @@ class Payment extends Model
         return $this->belongsTo(PaymentMethod::class);
     }
 
-    protected function logs(): HasMany
-    {
-        return $this->hasMany(PaymentLog::class);
-    }
-
     protected function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);

@@ -112,4 +112,5 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'third_party_login_providers' => explode(',', env('THIRD_PARTY_LOGIN_PROVIDERS', 'google,facebook,github')),
 ];

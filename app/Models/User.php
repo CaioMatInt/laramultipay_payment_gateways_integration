@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use SoftDeletes, HasFactory, Notifiable;
+    use SoftDeletes, HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +24,9 @@ class User extends Authenticatable
         'email',
         'password',
         'company_id',
-        'user_type_id'
+        'user_type_id',
+        'external_provider_id',
+        'provider_id',
     ];
 
     /**
@@ -57,5 +60,19 @@ class User extends Authenticatable
     public function type(): HasMany
     {
         return $this->hasMany(UserType::class);
+    }
+
+    public function scopeWhereExternalProviderId($query, string $externalProviderId)
+    {
+        return $query->where('external_provider_id', $externalProviderId);
+    }
+
+    public static function findProviderNameByEmail(string $email): ?string
+    {
+        $user = self::where('email', $email)
+            ->with(['provider:id,name'])
+            ->first(['id']);
+
+        return $user->provider->name ?? null;
     }
 }

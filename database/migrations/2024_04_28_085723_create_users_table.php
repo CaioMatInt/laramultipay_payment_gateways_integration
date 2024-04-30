@@ -19,9 +19,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->foreignIdFor(Company::class);
-            $table->foreignIdFor(UserType::class);
+            $table->string('password')->nullable();
+            //@@TODO: must make it required after updating the code.
+            $table->foreignIdFor(Company::class)->nullable();
+            //@@TODO: must make it required after updating the code.
+            $table->foreignIdFor(UserType::class)->nullable();
+            $table->unsignedBigInteger('provider_id')->nullable();
+            $table->foreign('provider_id')->references('id')->on('providers');
+            $table->string('external_provider_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

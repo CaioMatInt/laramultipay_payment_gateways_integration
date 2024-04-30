@@ -9,8 +9,7 @@ class PaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => ['required', 'integer'],
-            'currency' => ['required'],
+
         ];
     }
 

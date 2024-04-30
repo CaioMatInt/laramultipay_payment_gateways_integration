@@ -9,8 +9,7 @@ class TransactionLogsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'event_type' => ['required'],
-            'details' => ['required'],
+
         ];
     }
 

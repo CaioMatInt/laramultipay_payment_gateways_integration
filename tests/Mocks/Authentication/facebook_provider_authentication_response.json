@@ -1,0 +1,26 @@
+{
+    "id": "6047785118642874",
+    "nickname": null,
+    "name": "John Doe",
+    "email": "john_doe@gmail.com",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+    "user": {
+        "name": "John Doe",
+        "email": "john_doe@gmail.com",
+        "id": "6047785118642874"
+    },
+    "attributes": {
+        "id": "6047785118642874",
+        "nickname": null,
+        "name": "John Doe",
+        "email": "john_doe@gmail.com",
+        "avatar": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        "avatar_original": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        "profileUrl": null
+    },
+    "token": "EAAJE2Lf7rsgBAGZCejG0DZCbz7Vx6hcBz8lqWGgECFVhWyXNc1V7Xyq3NvV8k1HpIEuV7KZCpTvT8TgTtOhdKjyXkJZCmIN09f4GZC4OZCjFzvYfKjJy6GXyX9pZCvFZCzwZBJbZAAxg3CJP26Y6YyU6BbU6XZBjKbU6RwU5LfJQn3q3NgZDZD",
+    "refreshToken": null,
+    "expiresIn": 5183297,
+    "approvedScopes": [
+    ]
+}

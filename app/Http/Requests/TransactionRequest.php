@@ -9,10 +9,7 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'gateway_transaction_id' => ['required'],
-            'gateway_status' => ['required'],
-            'response_code' => ['required'],
-            'date' => ['required', 'date'],
+
         ];
     }
 

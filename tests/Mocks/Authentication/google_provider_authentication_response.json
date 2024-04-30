@@ -1,0 +1,36 @@
+{
+    "id": "324234235235235555527",
+    "nickname": null,
+    "name": "John Doe",
+    "email": "john_doe@gmail.com",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+    "user": {
+        "sub": "234234234234234234244",
+        "name": "John Doe",
+        "given_name": "John",
+        "family_name": "M",
+        "picture": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        "email": "john_doe@gmail.com",
+        "email_verified": true,
+        "locale": "en-US",
+        "id": "324234235235235555527",
+        "verified_email": true,
+        "link": null
+    },
+    "attributes": {
+        "id": "324234235235235555527",
+        "nickname": null,
+        "name": "John Doe",
+        "email": "john_doe@gmail.com",
+        "avatar": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        "avatar_original": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+    },
+    "token": "c19a4b7d01b8c6b68f1d9f9e9d8f2f20ea3a6edc76d18e7b0cbd6a5e6a5d6f36",
+    "refreshToken": null,
+    "expiresIn": 3599,
+    "approvedScopes": [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "openid"
+    ]
+}

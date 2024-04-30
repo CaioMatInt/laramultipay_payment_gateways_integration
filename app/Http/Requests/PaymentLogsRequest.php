@@ -9,8 +9,7 @@ class PaymentLogsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'event_type' => ['required'],
-            'details' => ['nullable'],
+
         ];
     }
 
