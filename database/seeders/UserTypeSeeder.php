@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\UserType\UserTypeEnum;
-use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Database\Seeder;
 
