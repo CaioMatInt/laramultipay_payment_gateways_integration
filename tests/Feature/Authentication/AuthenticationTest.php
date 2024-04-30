@@ -1,50 +1,32 @@
 <?php
 
-namespace Authentication;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
 use Laravel\Sanctum\Sanctum;
-use Tests\TestCase;
-use Tests\Traits\ExternalProviderTrait;
-use Tests\Traits\ProviderTrait;
-use Tests\Traits\SocialiteTrait;
-use Tests\Traits\UserTrait;
 
-class AuthenticationTest extends TestCase
-{
-    use RefreshDatabase;
-    use UserTrait;
-    use ProviderTrait;
-    use ExternalProviderTrait;
-    use SocialiteTrait;
+uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(\Tests\Traits\UserTrait::class);
+uses(\Tests\Traits\ProviderTrait::class);
+uses(\Tests\Traits\ExternalProviderTrait::class);
+uses(\Tests\Traits\SocialiteTrait::class);
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->mockVariables();
-    }
+beforeEach(function () {
+    test()->mockUserWithUnverifiedEmail();
+    test()->mockUser();
+    test()->mockProviders();
+    test()->mockExternalProviderResponses();
+});
 
-    private function mockUsers(): void
-    {
-        $this->mockUser();
-        $this->mockUserWithUnverifiedEmail();
-    }
+describe('auth', function () {
 
-    private function mockVariables()
-    {
-        $this->mockUsers();
-        $this->mockProviders();
-        $this->mockExternalProviderResponses();
-    }
 
-    public function test_ensure_a_valid_and_verified_user_can_login()
-    {
+    test('ensure a valid and verified user can login', function () {
+
         $userCredentials['email'] = $this->user->email;
+
         $userCredentials['password'] = $this->unhashedDefaultUserPassword;
 
         $response = $this->post(route('user.login'), $userCredentials);
@@ -53,10 +35,9 @@ class AuthenticationTest extends TestCase
             'access_token',
             'name'
         ]);
-    }
+    });
 
-    public function test_cant_login_without_sending_password()
-    {
+    test('cant login without sending password', function () {
         $userCredentials['email'] = $this->user->email;
 
         $response = $this->post(route('user.login'), $userCredentials);
@@ -64,10 +45,9 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'password' => 'The password field is required.'
         ]);
-    }
+    });
 
-    public function test_cant_login_without_sending_email()
-    {
+    test('cant login without sending email', function () {
         $userCredentials['password'] = $this->unhashedDefaultUserPassword;
 
         $response = $this->post(route('user.login'), $userCredentials);
@@ -75,13 +55,12 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'email' => 'The email field is required.'
         ]);
-    }
+    });
 
-    public function test_cant_login_with_unverified_email()
-    {
+    test('cant login with unverified email', function () {
         Session::start();
 
-        $userCredentials['email'] = $this->userWithoutUnverifiedEmail->email;
+        $userCredentials['email'] = $this->userWithUnverifiedEmail->email;
         $userCredentials['password'] = $this->unhashedDefaultUserPassword;
 
         $response = $this->post(route('user.login'), $userCredentials);
@@ -89,10 +68,9 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'email' => 'Your email address is not verified. Please, check your inbox.'
         ]);
-    }
+    });
 
-    public function test_cant_login_with_invalid_password()
-    {
+    test('cant login with invalid password', function () {
         $userCredentials['email'] = $this->user->email;
         $userCredentials['password'] = 'invalidPassword';
 
@@ -101,10 +79,9 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'email' => 'These credentials do not match our records.'
         ]);
-    }
+    });
 
-    public function test_cant_login_with_invalid_email()
-    {
+    test('cant login with invalid email', function () {
         Session::start();
 
         $userCredentials['email'] = 'email@mail.com';
@@ -115,19 +92,17 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'email' => 'These credentials do not match our records.'
         ]);
-    }
+    });
 
-    public function test_can_register_user_with_valid_data()
-    {
+    test('can register user with valid data', function () {
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['name', 'email']);
         $userData = array_merge($userData, $this->getDefaultPasswordAndConfirmationPassword());
 
         $this->postJson(route('user.register'), $userData)->assertCreated();
-    }
+    });
 
-    public function test_cant_register_user_without_email()
-    {
+    test('cant register user without email', function () {
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['name']);
         $userData = array_merge($userData, $this->getDefaultPasswordAndConfirmationPassword());
@@ -137,10 +112,9 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'email' => 'The email field is required.'
         ]);
-    }
+    });
 
-    public function test_cant_register_user_without_name()
-    {
+    test('cant register user without name', function () {
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['email']);
         $userData['password'] = $this->unhashedDefaultUserPassword;
@@ -150,10 +124,9 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'name' => 'The name field is required.'
         ]);
-    }
+    });
 
-    public function test_cant_register_user_without_password()
-    {
+    test('cant register user without password', function () {
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['email', 'name']);
 
@@ -162,10 +135,9 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors([
             'password' => 'The password field is required.'
         ]);
-    }
+    });
 
-    public function test_cant_register_user_with_an_email_that_is_already_in_use()
-    {
+    test('cant register user with an email that is already in use', function () {
         $alreadyExistingUser = User::factory()->create();
 
         $newUserFactoryData = User::factory()->make();
@@ -177,10 +149,9 @@ class AuthenticationTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['email']);
-    }
+    });
 
-    public function test_cant_register_user_with_an_invalid_email()
-    {
+    test('cant register user with an invalid email', function () {
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['name']);
         $userData['email'] = 'invalid-email';
@@ -189,14 +160,10 @@ class AuthenticationTest extends TestCase
         $response = $this->postJson(route('user.register'), $userData);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['email']);
-        $this->assertEquals(
-            'The email field must be a valid email address.',
-            $response->json('errors.email.0')
-        );
-    }
+        expect($response->json('errors.email.0'))->toEqual('The email field must be a valid email address.');
+    });
 
-    public function test_cant_register_user_with_a_name_longer_than_255_characters()
-    {
+    test('cant register user with a name longer than 255 characters', function () {
         $userData['name'] = str_repeat('a', 256);
         $userData['email'] = 'email@mail.com';
         $userData['password'] = '12345678';
@@ -205,14 +172,10 @@ class AuthenticationTest extends TestCase
         $response = $this->postJson(route('user.register'), $userData);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['name']);
-        $this->assertEquals(
-            'The name field must not be greater than 255 characters.',
-            $response->json('errors.name.0')
-        );
-    }
+        expect($response->json('errors.name.0'))->toEqual('The name field must not be greater than 255 characters.');
+    });
 
-    public function test_cant_register_user_with_an_integer_name()
-    {
+    test('cant register user with an integer name', function () {
         $userData['name'] = 123;
         $userData['email'] = 'email@mail.com';
         $userData['password'] = '12345678';
@@ -222,14 +185,10 @@ class AuthenticationTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['name']);
-        $this->assertEquals(
-            'The name field must be a string.',
-            $response->json('errors.name.0')
-        );
-    }
+        expect($response->json('errors.name.0'))->toEqual('The name field must be a string.');
+    });
 
-    public function test_cant_register_with_a_password_with_less_than_8_characters()
-    {
+    test('cant register with a password with less than 8 characters', function () {
         $userData['name'] = 'Test User';
         $userData['email'] = 'email@mail.com';
         $userData['password'] = '1234567';
@@ -239,31 +198,25 @@ class AuthenticationTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['password']);
-        $this->assertEquals(
-            'The password field must be at least 8 characters.',
-            $response->json('errors.password.0')
-        );
-    }
+        expect($response->json('errors.password.0'))->toEqual('The password field must be at least 8 characters.');
+    });
 
-    public function test_ensure_a_non_authenticated_user_cannot_logout()
-    {
+    test('ensure a non authenticated user cannot logout', function () {
         $response = $this->json('POST', route('user.logout'));
 
         $response->assertUnauthorized();
-    }
+    });
 
-    public function test_authenticated_user_can_logout()
-    {
+    test('authenticated user can logout', function () {
         Sanctum::actingAs(
             $this->user
         );
 
         $response = $this->json('POST', route('user.logout'));
         $response->assertNoContent();
-    }
+    });
 
-    public function test_can_show_current_authenticated_user()
-    {
+    test('can show current authenticated user', function () {
         $response = $this->actingAs($this->user)->get(route('user.me'));
         $response->assertOk();
         $response->assertJsonStructure([
@@ -272,28 +225,22 @@ class AuthenticationTest extends TestCase
             'created_at',
             'updated_at',
         ]);
-    }
+    });
 
-    public function test_cant_show_current_authenticated_user_when_not_logged_in()
-    {
+    test('cant show current authenticated user when not logged in', function () {
         $this->json('get', route('user.me'))->assertUnauthorized();
-    }
+    });
 
-    public function test_cant_ask_for_recovering_email_when_there_is_no_user_registered_with_it()
-    {
+    test('cant ask for recovering email when there is no user registered with it', function () {
         $response = $this->json('POST', route('user.password.forgot'), [
             'email' => 'invalid@email.com'
         ]);
 
         $response->assertUnprocessable();
-        $this->assertEquals(
-            'The selected email is invalid.',
-            $response->json('errors.email.0')
-        );
-    }
+        expect($response->json('errors.email.0'))->toEqual('The selected email is invalid.');
+    });
 
-    public function test_can_ask_for_email_recovering_when_sending_an_email_that_there_is_a_user_registered_with_it()
-    {
+    test('can ask for email recovering when sending an email that there is a user registered with it', function () {
         $user = $this->user;
         $response = $this->post(route('user.password.forgot'), [
             'email' => $user->email
@@ -304,11 +251,10 @@ class AuthenticationTest extends TestCase
             'message'
         ]);
 
-        $this->assertEquals("We have emailed your password reset link.", $response['message']);
-    }
+        expect($response['message'])->toEqual("We have emailed your password reset link.");
+    });
 
-    public function test_can_reset_password_when_token_is_valid()
-    {
+    test('can reset password when token is valid', function () {
         $user = $this->user;
         $token = Password::broker()->createToken($user);
         $newPassword = '12345678';
@@ -327,10 +273,9 @@ class AuthenticationTest extends TestCase
         $response->assertJson([
             'message' => 'Your password has been reset.'
         ]);
-    }
+    });
 
-    public function test_cant_reset_password_when_token_is_invalid()
-    {
+    test('cant reset password when token is invalid', function () {
         $user = $this->user;
         $newPassword = '12345678';
 
@@ -345,11 +290,10 @@ class AuthenticationTest extends TestCase
             'message'
         ]);
 
-        $this->assertEquals("This password reset token is invalid.", $response['message']);
-    }
+        expect($response['message'])->toEqual("This password reset token is invalid.");
+    });
 
-    public function test_cant_reset_password_when_email_is_not_valid()
-    {
+    test('cant reset password when email is not valid', function () {
         $newPassword = '12345678';
 
         $response = $this->json('POST', route('user.password.reset'), [
@@ -360,14 +304,10 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $this->assertEquals(
-            'The selected email is invalid.',
-            $response->json('errors.email.0')
-        );
-    }
+        expect($response->json('errors.email.0'))->toEqual('The selected email is invalid.');
+    });
 
-    public function test_cant_reset_password_when_password_has_less_than_8_characters()
-    {
+    test('cant reset password when password has less than 8 characters', function () {
         $user = $this->user;
         $token = Password::broker()->createToken($user);
         $newPassword = '1234567';
@@ -380,14 +320,10 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $this->assertEquals(
-            'The password field must be at least 8 characters.',
-            $response->json('errors.password.0')
-        );
-    }
+        expect($response->json('errors.password.0'))->toEqual('The password field must be at least 8 characters.');
+    });
 
-    public function test_cant_reset_password_when_confirming_a_wrong_password()
-    {
+    test('cant reset password when confirming a wrong password', function () {
         $user = $this->user;
         $token = Password::broker()->createToken($user);
         $newPassword = '12345678';
@@ -401,14 +337,10 @@ class AuthenticationTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $this->assertEquals(
-            'The password field confirmation does not match.',
-            $response->json('errors.password.0')
-        );
-    }
+        expect($response->json('errors.password.0'))->toEqual('The password field confirmation does not match.');
+    });
 
-    public function test_cant_reset_password_when_not_confirming_password()
-    {
+    test('cant reset password when not confirming password', function () {
         $user = $this->user;
         $token = Password::broker()->createToken($user);
         $newPassword = '12345678';
@@ -421,14 +353,10 @@ class AuthenticationTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $this->assertEquals(
-            'The password confirmation field is required.',
-            $response->json('errors.password_confirmation.0')
-        );
-    }
+        expect($response->json('errors.password_confirmation.0'))->toEqual('The password confirmation field is required.');
+    });
 
-    public function test_cant_reset_password_when_not_sending_token()
-    {
+    test('cant reset password when not sending token', function () {
         $user = $this->user;
         $newPassword = '12345678';
 
@@ -440,14 +368,10 @@ class AuthenticationTest extends TestCase
 
         $response->assertUnprocessable();
 
-        $this->assertEquals(
-            'The token field is required.',
-            $response->json('errors.token.0')
-        );
-    }
+        expect($response->json('errors.token.0'))->toEqual('The token field is required.');
+    });
 
-    public function test_cant_reset_password_with_expired_token()
-    {
+    test('cant reset password with expired token', function () {
         $user = User::factory()->create();
         $token = Password::broker()->createToken($user);
         $password = 'newpassword';
@@ -467,21 +391,18 @@ class AuthenticationTest extends TestCase
         $response->assertJsonStructure([
             'message'
         ]);
-        $this->assertEquals("This password reset token is invalid.", $response->json('message'));
-    }
+        expect($response->json('message'))->toEqual("This password reset token is invalid.");
+    });
 
-    public function test_cant_redirect_to_login_with_provider_using_an_invalid_provider_name()
-    {
+    test('cant redirect to login with provider using an invalid provider name', function () {
         $response = $this->get(route('user.login') . '/' . 'invalid-provider');
-
 
         $response->assertSessionHasErrors([
             'provider_name' => 'The selected provider name is invalid.'
         ]);
-    }
+    });
 
-    public function test_should_redirect_to_login_with_provider_using_a_valid_provider_name()
-    {
+    test('should redirect to login with provider using a valid provider name', function () {
         $providers = config('auth.third_party_login_providers');
 
         if ($providers) {
@@ -489,10 +410,9 @@ class AuthenticationTest extends TestCase
             $response = $this->get(route('user.login') . '/' . $provider);
             $response->assertRedirect();
         }
-    }
+    });
 
-    public function test_ensure_a_registered_user_with_google_provider_can_login()
-    {
+    test('ensure a registered user with google provider can login', function () {
         User::factory()->make([
             'name' => $this->googleResponse->name,
             'email' => $this->googleResponse->email,
@@ -504,11 +424,10 @@ class AuthenticationTest extends TestCase
 
         $this->get(route('user.login.provider.callback', $this->googleProvider->name));
 
-        $this->assertTrue(Auth::check());
-    }
+        expect(Auth::check())->toBeTrue();
+    });
 
-    public function test_ensure_a_registered_user_with_facebook_provider_can_login()
-    {
+    test('ensure a registered user with facebook provider can login', function () {
         User::factory()->make([
             'name' => $this->facebookResponse->name,
             'email' => $this->facebookResponse->email,
@@ -519,11 +438,10 @@ class AuthenticationTest extends TestCase
         $this->makeSocialiteServiceStub('login', $this->facebookResponse);
 
         $this->get(route('user.login.provider.callback', $this->facebookProvider->name));
-        $this->assertTrue(Auth::check());
-    }
+        expect(Auth::check())->toBeTrue();
+    });
 
-    public function test_ensure_a_registered_user_with_github_provider_can_login()
-    {
+    test('ensure a registered user with github provider can login', function () {
         User::factory()->make([
             'name' => $this->githubResponse->name,
             'email' => $this->githubResponse->email,
@@ -534,11 +452,10 @@ class AuthenticationTest extends TestCase
         $this->makeSocialiteServiceStub('login', $this->githubResponse);
 
         $res = $this->get(route('user.login.provider.callback', $this->githubProvider->name));
-        $this->assertTrue(Auth::check());
-    }
+        expect(Auth::check())->toBeTrue();
+    });
 
-    public function test_ensure_an_unregistered_user_that_has_logged_with_google_gets_an_account_and_log_in()
-    {
+    test('ensure an unregistered user that has logged with google gets an account and log in', function () {
         $this->makeSocialiteServiceStub('login', $this->googleResponse);
 
         $this->get(route('user.login.provider.callback', $this->googleProvider->name));
@@ -549,11 +466,10 @@ class AuthenticationTest extends TestCase
             'name' => $this->googleResponse->name,
             'email' => $this->googleResponse->email
         ]);
-        $this->assertTrue(Auth::check());
-    }
+        expect(Auth::check())->toBeTrue();
+    });
 
-    public function test_ensure_an_unregistered_user_that_has_logged_with_facebook_gets_an_account_and_log_in()
-    {
+    test('ensure an unregistered user that has logged with facebook gets an account and log in', function () {
         $this->makeSocialiteServiceStub('login', $this->facebookResponse);
 
         $this->get(route('user.login.provider.callback', $this->facebookProvider->name));
@@ -564,11 +480,10 @@ class AuthenticationTest extends TestCase
             'name' => $this->facebookResponse->name,
             'email' => $this->facebookResponse->email
         ]);
-        $this->assertTrue(Auth::check());
-    }
+        expect(Auth::check())->toBeTrue();
+    });
 
-    public function test_ensure_an_unregistered_user_that_has_used_logged_with_github_gets_an_account_and_log_in()
-    {
+    test('ensure an unregistered user that has used logged with github gets an account and log in', function () {
         $this->makeSocialiteServiceStub('login', $this->githubResponse);
 
         $this->get(route('user.login.provider.callback', $this->githubProvider->name));
@@ -579,19 +494,17 @@ class AuthenticationTest extends TestCase
             'name' => $this->githubResponse->nickname,
             'email' => $this->githubResponse->email
         ]);
-        $this->assertTrue(Auth::check());
-    }
+        expect(Auth::check())->toBeTrue();
+    });
 
-    public function test_cannot_login_with_invalid_provider()
-    {
+    test('cannot login with invalid provider', function () {
         $response = $this->get(route('user.login.provider.callback', 'googlew'));
         $response->assertSessionHasErrors([
             'provider_name' => 'The selected provider name is invalid.'
         ]);
-    }
+    });
 
-    public function test_cant_login_with_a_different_provider_as_the_registered()
-    {
+    test('cant login with a different provider as the registered', function () {
         $this->expectException(\Exception::class);
 
         User::factory()->create([
@@ -613,6 +526,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->get(route('user.login.provider.callback', $this->githubProvider->name))->json();
-        $this->assertFalse(Auth::check());
-    }
-}
+        expect(Auth::check())->toBeFalse();
+    });
+
+});

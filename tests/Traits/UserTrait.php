@@ -7,26 +7,26 @@ use Illuminate\Support\Facades\Hash;
 
 trait UserTrait
 {
-    private User $user;
-    private User $userWithoutUnverifiedEmail;
-    private string $unhashedDefaultUserPassword = '12345678';
+    public User $user;
+    public User $userWithUnverifiedEmail;
+    public string $unhashedDefaultUserPassword = '12345678';
 
-    private function mockUser(): void
+    public function mockUser(): void
     {
         $this->user = User::factory()->create([
             'password' => Hash::make($this->unhashedDefaultUserPassword)
         ]);
     }
 
-    private function mockUserWithUnverifiedEmail(): void
+    public function mockUserWithUnverifiedEmail(): void
     {
-        $this->userWithoutUnverifiedEmail = User::factory()->create([
+        $this->userWithUnverifiedEmail = User::factory()->create([
             'password' => Hash::make($this->unhashedDefaultUserPassword),
             'email_verified_at' => null
         ]);
     }
 
-    private function getDefaultPasswordAndConfirmationPassword(): array
+    public function getDefaultPasswordAndConfirmationPassword(): array
     {
         return [
             'password' => $this->unhashedDefaultUserPassword,

@@ -4,11 +4,11 @@ namespace Tests\Traits;
 
 trait ExternalProviderTrait
 {
-    private object $googleResponse;
-    private object $facebookResponse;
-    private object $githubResponse;
+    public object $googleResponse;
+    public object $facebookResponse;
+    public object $githubResponse;
 
-    private function mockGoogleResponse(): void
+    public function mockGoogleResponse(): void
     {
         $googleResponse = file_get_contents(base_path
             ('tests/Mocks/Authentication/google_provider_authentication_response.json')
@@ -17,7 +17,7 @@ trait ExternalProviderTrait
         $this->googleResponse = json_decode($googleResponse);
     }
 
-    private function mockFacebookResponse(): void
+    public function mockFacebookResponse(): void
     {
         $facebookResponse = file_get_contents(base_path
             ('tests/Mocks/Authentication/facebook_provider_authentication_response.json')
@@ -26,7 +26,7 @@ trait ExternalProviderTrait
         $this->facebookResponse = json_decode($facebookResponse);
     }
 
-    private function mockGithubResponse(): void
+    public function mockGithubResponse(): void
     {
         $githubResponse = file_get_contents(base_path
             ('tests/Mocks/Authentication/github_provider_authentication_response.json')
@@ -35,7 +35,7 @@ trait ExternalProviderTrait
         $this->githubResponse = json_decode($githubResponse);
     }
 
-    private function mockExternalProviderResponses(): void
+    public function mockExternalProviderResponses(): void
     {
         $this->mockGoogleResponse();
         $this->mockFacebookResponse();
