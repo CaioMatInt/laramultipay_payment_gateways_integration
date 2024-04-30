@@ -13,7 +13,6 @@ class PaymentMethod extends Model
 
     protected $fillable = [
         'name',
-        'slug'
     ];
 
     protected function payments(): HasMany

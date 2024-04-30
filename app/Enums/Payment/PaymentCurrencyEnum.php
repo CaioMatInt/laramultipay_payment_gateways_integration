@@ -2,11 +2,11 @@
 
 namespace App\Enums\Payment;
 
-use App\Traits\EnumAttributeHandlerTrait;
+use App\Traits\EnumAttributeTrait;
 
 enum PaymentCurrencyEnum : string
 {
-    use EnumAttributeHandlerTrait;
+    use EnumAttributeTrait;
 
     case USD = 'USD';
     case EUR = 'EUR';

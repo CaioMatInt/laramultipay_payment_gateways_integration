@@ -13,7 +13,6 @@ class PaymentGateway extends Model
 
     protected $fillable = [
         'name',
-        'slug',
     ];
 
     protected function transactionStatuses(): HasMany
