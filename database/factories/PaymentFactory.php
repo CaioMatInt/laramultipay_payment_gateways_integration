@@ -22,8 +22,8 @@ class PaymentFactory extends Factory
             'user' => User::factory(),
             'company' => Company::factory(),
             'currency' => $this->faker->unique()->randomElement(PaymentCurrencyEnum::values()),
-            'payment_generic_status_id' => PaymentGenericStatus::factory(),
-            'payment_method_id' => PaymentMethod::factory(),
+            'payment_generic_status_id' => null,
+            'payment_method_id' => null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

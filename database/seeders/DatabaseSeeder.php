@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
                 UserSeeder::class,
                 PaymentGatewaySeeder::class,
                 PaymentMethodSeeder::class,
+                PaymentGenericStatusSeeder::class,
             ]);
         }
     }

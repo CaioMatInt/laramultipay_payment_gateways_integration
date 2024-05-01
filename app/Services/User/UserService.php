@@ -6,6 +6,7 @@ use App\Enums\UserType\UserTypeEnum;
 use App\Exceptions\Authentication\ProviderMismatchException;
 use App\Models\User;
 use App\Models\UserType;
+use App\Services\UserType\UserTypeService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,8 @@ use Illuminate\Validation\ValidationException;
 class UserService
 {
     public function __construct(
-        private readonly User $model
+        private readonly User $model,
+        private readonly UserTypeService $userTypeService
     ) { }
 
     public function login(string $email, string $password): void
@@ -90,23 +92,27 @@ class UserService
      */
     public function checkProviderMatchOrThrow(string $userEmail, string $providerName): void
     {
-        $userProviderName = User::findProviderNameByEmail($userEmail);
+        $userProviderName = $this->findUserProviderByEmail($userEmail);
 
         if ($userProviderName && $userProviderName !== $providerName) {
             throw new ProviderMismatchException($userEmail, $providerName);
         }
     }
 
-    public function getAuthenticatedUser(): User
-    {
-        return auth()->user();
-    }
-
     public function create(array $data): User
     {
         $data['password'] = bcrypt($data['password']);
-        $companyAdminUserTypeId = UserType::whereName(UserTypeEnum::COMPANY_ADMIN->value)->first()->id;
+        $companyAdminUserTypeId = $this->userTypeService->findByName(UserTypeEnum::COMPANY_ADMIN->value)->id;
         $data['user_type_id'] = $companyAdminUserTypeId;
         return $this->model->create($data);
+    }
+
+    public function findUserProviderByEmail(string $email): ?string
+    {
+        $user = $this->model->where('email', $email)
+            ->with(['provider:id,name'])
+            ->first(['id']);
+
+        return $user->provider->name ?? null;
     }
 }

@@ -15,6 +15,11 @@ class PaymentMethod extends Model
         'name',
     ];
 
+    public function scopeWhereName($query, string $name)
+    {
+        return $query->where('name', $name);
+    }
+
     protected function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'payment_method_id');

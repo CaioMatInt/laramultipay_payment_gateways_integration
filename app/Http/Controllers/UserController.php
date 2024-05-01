@@ -10,6 +10,7 @@ use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\SendPasswordResetLinkEmailRequest;
 use App\Http\Resources\User\UserLoginResource;
 use App\Http\Resources\User\UserResource;
+use App\Models\Company;
 use App\Services\Authentication\ProviderService;
 use App\Services\Company\CompanyService;
 use App\Services\User\UserService;
@@ -59,7 +60,7 @@ class UserController extends Controller
     {
         $data = $request->only('name', 'email', 'password');
         $this->userService->create($data);
-        $this->companyService->create([
+        Company::create([
             'name' => $request->company_name
         ]);
 
@@ -68,7 +69,7 @@ class UserController extends Controller
 
     public function getAuthenticatedUser(): Response
     {
-        $userResource = new UserResource($this->userService->getAuthenticatedUser());
+        $userResource = new UserResource(auth()->user());
         return response($userResource);
     }
 

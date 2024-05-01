@@ -16,7 +16,6 @@ trait PaymentTrait
             'amount' => $data['amount'] ?? $paymentFactoryGenericData->amount,
             'user_id' => $data['user_id'] ?? $paymentFactoryGenericData->user_id,
             'currency' => $data['currency'] ?? $paymentFactoryGenericData->currency,
-            'payment_gateway' => $data['payment_gateway'] ?? PaymentGateway::factory()->make()->name,
             'payment_method' => $data['payment_method'] ?? PaymentMethod::factory()->make()->name,
         ];
     }
