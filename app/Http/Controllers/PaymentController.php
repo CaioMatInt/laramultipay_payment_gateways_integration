@@ -17,7 +17,9 @@ class PaymentController extends Controller
 
     public function store(StorePaymentRequest $request)
     {
+        //@@TODO: Must handle exceptions
         $payment = $this->service->create($request->validated());
+
         return new PaymentResource(
             $payment,
             app(PaymentGenericStatusService::class),

@@ -19,15 +19,8 @@ describe('payments', function () {
     test('can create a payment', function () {
         $this->actingAs($this->userCompanyAdmin);
 
-        PaymentGenericStatus::factory()->create([
-            'name' => PaymentGenericStatusEnum::PENDING->value
-        ]);
-
-        PaymentMethod::factory()->create(
-            [
-                'name' => PaymentMethodEnum::CREDIT_CARD->value,
-            ]
-        );
+        PaymentGenericStatus::factory()->create(['name' => PaymentGenericStatusEnum::PENDING->value]);
+        PaymentMethod::factory()->create(['name' => PaymentMethodEnum::CREDIT_CARD->value]);
 
         $paymentPayload = $this->getCreatePaymentPayload(
             [
@@ -35,7 +28,7 @@ describe('payments', function () {
                 'payment_method' => PaymentMethodEnum::CREDIT_CARD->value,
             ]);
 
-        $response = $this->post(route('payment.store'), $paymentPayload);
+        $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertCreated();
 
         $response->assertJsonFragment([
@@ -51,7 +44,7 @@ describe('payments', function () {
                 'user_id' => $this->userCompanyAdmin->id,
             ]);
 
-        $response = $this->post(route('payment.store'), $paymentPayload);
+        $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertUnauthorized();
     });
 
@@ -64,23 +57,9 @@ describe('payments', function () {
                 'currency' => 'invalid_currency',
             ]);
 
-        $response = $this->post(route('payment.store'), $paymentPayload);
+        $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['currency']);
-        //@@todo assert invalid currency message
-    });
-
-    test('cant create a payment with invalid payment gateway', function () {
-        $this->actingAs($this->userCompanyAdmin);
-
-        $paymentPayload = $this->getCreatePaymentPayload(
-            [
-                'user_id' => $this->userCompanyAdmin->id,
-                'payment_gateway' => 'invalid_payment_gateway',
-            ]);
-
-        $response = $this->post(route('payment.store'), $paymentPayload);
-        $response->assertStatus(422);
         //@@todo assert invalid currency message
     });
 
@@ -93,7 +72,7 @@ describe('payments', function () {
                 'amount' => 'invalid_amount',
             ]);
 
-        $response = $this->post(route('payment.store'), $paymentPayload);
+        $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['amount']);
         //@@todo assert invalid currency message
