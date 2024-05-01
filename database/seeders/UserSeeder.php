@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserType\UserTypeEnum;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\UserType;
@@ -11,7 +12,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminUserTypeId = UserType::whereName('admin')->first()->id;
+        $adminUserTypeId = UserType::whereName(UserTypeEnum::SUPER_ADMIN->value)->first()->id;
 
         User::factory()->create([
             'name' => 'John Doe',

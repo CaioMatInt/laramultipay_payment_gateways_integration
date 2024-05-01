@@ -9,6 +9,6 @@ enum UserTypeEnum : string
     use EnumAttributeTrait;
 
     case SUPER_ADMIN = 'super_admin';
-    case ADMIN = 'admin';
+    case COMPANY_ADMIN = 'company_admin';
     case USER = 'user';
 }

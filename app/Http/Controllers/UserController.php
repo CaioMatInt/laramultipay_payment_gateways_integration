@@ -11,6 +11,7 @@ use App\Http\Requests\User\SendPasswordResetLinkEmailRequest;
 use App\Http\Resources\User\UserLoginResource;
 use App\Http\Resources\User\UserResource;
 use App\Services\Authentication\ProviderService;
+use App\Services\Company\CompanyService;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,7 +22,8 @@ class UserController extends Controller
     //@@TODO: This should be names ad AuthenticationController
     public function __construct(
         private readonly UserService $userService,
-        private readonly ProviderService $providerService
+        private readonly ProviderService $providerService,
+        private readonly CompanyService $companyService
     ) { }
 
     public function login(LoginRequest $request): Response
@@ -55,10 +57,13 @@ class UserController extends Controller
 
     public function register(RegisterRequest $request): Response
     {
-        $data = $request->only('name', 'email', 'password', 'profile_type');
-        $data['password'] = bcrypt($data['password']);
+        $data = $request->only('name', 'email', 'password');
         $this->userService->create($data);
-        return response([], Response::HTTP_CREATED);
+        $this->companyService->create([
+            'name' => $request->company_name
+        ]);
+
+        return response('', Response::HTTP_CREATED);
     }
 
     public function getAuthenticatedUser(): Response

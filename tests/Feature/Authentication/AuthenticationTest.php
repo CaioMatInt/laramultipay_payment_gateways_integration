@@ -1,6 +1,8 @@
 <?php
 
+use App\Enums\UserType\UserTypeEnum;
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
@@ -12,6 +14,7 @@ uses(\Tests\Traits\UserTrait::class);
 uses(\Tests\Traits\ProviderTrait::class);
 uses(\Tests\Traits\ExternalProviderTrait::class);
 uses(\Tests\Traits\SocialiteTrait::class);
+uses(\Tests\Traits\UserTypeTrait::class);
 
 beforeEach(function () {
     test()->mockUserWithUnverifiedEmail();
@@ -95,11 +98,47 @@ describe('auth', function () {
     });
 
     test('can register user with valid data', function () {
+        $userTypeCompanyAdmin = $this->createCompanyAdmin();
+
+        $userFactoryData = User::factory()->make();
+        $userData = $userFactoryData->only(['name', 'email']);
+        $userData['company_name'] = 'Company Name';
+        $userData = array_merge($userData, $this->getDefaultPasswordAndConfirmationPassword());
+
+        $this->postJson(route('user.register'), $userData)->assertCreated();
+
+        $this->assertDatabaseHas('users', [
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'user_type_id' => $userTypeCompanyAdmin->id
+        ]);
+    });
+
+    test('should create a company for the new registered user', function () {
+        $this->createCompanyAdmin();
+
+        $userFactoryData = User::factory()->make();
+        $userData = $userFactoryData->only(['name', 'email']);
+        $userData['company_name'] = 'Company Name';
+        $userData = array_merge($userData, $this->getDefaultPasswordAndConfirmationPassword());
+
+        $this->postJson(route('user.register'), $userData);
+
+        $this->assertDatabaseHas('companies', [
+            'name' => $userData['company_name']
+        ]);
+    });
+
+    test('cant register user without company name', function () {
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['name', 'email']);
         $userData = array_merge($userData, $this->getDefaultPasswordAndConfirmationPassword());
 
-        $this->postJson(route('user.register'), $userData)->assertCreated();
+        $response = $this->post(route('user.register'), $userData);
+
+        $response->assertSessionHasErrors([
+            'company_name' => 'The company name field is required.'
+        ]);
     });
 
     test('cant register user without email', function () {

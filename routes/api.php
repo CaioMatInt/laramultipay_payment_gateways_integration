@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,8 @@ Route::prefix('users')->group(function () {
         Route::get('me', [UserController::class, 'getAuthenticatedUser'])->name('user.me');
         Route::post('{id}/update', [UserController::class, 'update'])->name('user.update');
     });
+});
+
+Route::prefix('payments')->middleware('auth:sanctum')->group(function () {
+    Route::post('', [PaymentController::class, 'create'])->name('payment.create');
 });

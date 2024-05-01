@@ -2,8 +2,10 @@
 
 namespace App\Services\User;
 
+use App\Enums\UserType\UserTypeEnum;
 use App\Exceptions\Authentication\ProviderMismatchException;
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -102,6 +104,9 @@ class UserService
 
     public function create(array $data): User
     {
+        $data['password'] = bcrypt($data['password']);
+        $companyAdminUserTypeId = UserType::whereName(UserTypeEnum::COMPANY_ADMIN->value)->first()->id;
+        $data['user_type_id'] = $companyAdminUserTypeId;
         return $this->model->create($data);
     }
 }
