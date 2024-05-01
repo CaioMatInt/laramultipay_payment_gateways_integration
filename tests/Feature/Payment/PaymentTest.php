@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Enums\Payment\PaymentGenericStatusEnum;
 use App\Enums\PaymentMethod\PaymentMethodEnum;
 use App\Models\PaymentGenericStatus;
@@ -60,7 +61,9 @@ describe('payments', function () {
         $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['currency']);
-        //@@todo assert invalid currency message
+
+        $validCurrencies = implode(',', PaymentCurrencyEnum::values());
+        $response->assertJsonFragment(['The currency must be one of the following: '.$validCurrencies]);
     });
 
     test('cant create a payment with invalid amount', function () {
@@ -75,6 +78,24 @@ describe('payments', function () {
         $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['amount']);
-        //@@todo assert invalid currency message
+
+        $response->assertJsonFragment(['The amount field must be an integer.']);
+    });
+
+    test('cant create a payment with invalid payment method', function () {
+        $this->actingAs($this->userCompanyAdmin);
+
+        $paymentPayload = $this->getCreatePaymentPayload(
+            [
+                'user_id' => $this->userCompanyAdmin->id,
+                'payment_method' => 'invalid_payment_method',
+            ]);
+
+        $response = $this->postJson(route('payment.store'), $paymentPayload);
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['payment_method']);
+
+        $validPaymentMethods = implode(',', PaymentMethodEnum::values());
+        $response->assertJsonFragment(['The payment method must be one of the following: '.$validPaymentMethods]);
     });
 });

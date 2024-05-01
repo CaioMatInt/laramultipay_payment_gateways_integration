@@ -22,4 +22,12 @@ class StorePaymentRequest extends FormRequest
             'payment_method' => 'required|string|in:'.implode(',', PaymentMethodEnum::values()),
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'currency.in' => 'The currency must be one of the following: '.implode(',', PaymentCurrencyEnum::values()),
+            'payment_method.in' => 'The payment method must be one of the following: '.implode(',', PaymentMethodEnum::values()),
+        ];
+    }
 }
