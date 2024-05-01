@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PaymentGatewaysKeysController extends Controller
 {
-    use AuthorizesRequests;
+/*    use AuthorizesRequests;
 
     public function index()
     {
@@ -48,5 +48,5 @@ class PaymentGatewaysKeysController extends Controller
         $paymentGatewaysKeys->delete();
 
         return response()->json();
-    }
+    }*/
 }
