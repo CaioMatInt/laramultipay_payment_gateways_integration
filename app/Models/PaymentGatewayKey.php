@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentGatewayKey extends Model
@@ -16,12 +17,12 @@ class PaymentGatewayKey extends Model
         'key'
     ];
 
-    protected function gateway()
+    protected function gateway(): BelongsTo
     {
         return $this->belongsTo(PaymentGateway::class);
     }
 
-    protected function company()
+    protected function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }

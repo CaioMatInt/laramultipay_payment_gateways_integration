@@ -15,14 +15,14 @@ class PaymentGenericStatusService
     public function getCachedInitialStatus(): PaymentGenericStatus
     {
         return Cache::rememberForever('payment_generic_status_initial', function () {
-            return $this->model->whereName(PaymentGenericStatusEnum::PENDING->value)->first();
+            return $this->model->whereName(PaymentGenericStatusEnum::PENDING->value)->firstOrFail();
         });
     }
 
     public function findCached(int $id): PaymentGenericStatus
     {
         return Cache::rememberForever("payment_generic_status_{$id}", function () use ($id) {
-            return $this->model->find($id);
+            return $this->model->findOrFail($id);
         });
     }
 }

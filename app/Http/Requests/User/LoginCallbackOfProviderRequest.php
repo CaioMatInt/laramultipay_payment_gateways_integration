@@ -21,14 +21,14 @@ class LoginCallbackOfProviderRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'provider_name' => ['in:' . implode(',', config('auth.third_party_login_providers'))]
         ];
     }
 
-    public function all($keys = null)
+    public function all($keys = null): array
     {
         $data = parent::all();
         $data['provider_name'] = $this->route('provider_name');

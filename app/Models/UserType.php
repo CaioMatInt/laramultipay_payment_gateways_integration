@@ -20,7 +20,7 @@ class UserType extends Model
         return $this->hasMany(User::class);
     }
 
-    public function scopeWhereName($query, string $name)
+    public function scopeWhereName($query, string $name): self
     {
         return $query->where('name', $name);
     }

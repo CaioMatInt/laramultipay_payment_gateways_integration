@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\User;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserLoginResource extends JsonResource
@@ -12,7 +13,7 @@ class UserLoginResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this['user']->id,
@@ -23,7 +24,7 @@ class UserLoginResource extends JsonResource
         ];
     }
 
-    public function with($request)
+    public function with(Request $request): array
     {
         return [
             'status' => 'success',

@@ -6,7 +6,7 @@ use Exception;
 
 class ProviderMismatchException extends Exception
 {
-    public function __construct($userEmail, $providerName)
+    public function __construct(string $userEmail, string $providerName)
     {
         $message = "You tried signing in as {$userEmail} via {$providerName}, which is not the authentication method
          you used during sign up. Try again using the authentication method you used during sign up.";

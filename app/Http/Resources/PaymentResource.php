@@ -20,9 +20,14 @@ class PaymentResource extends JsonResource
         parent::__construct($resource);
     }
 
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
     public function toArray(Request $request): array
     {
-
         $paymentGenericStatusName = $this
             ->paymentGenericStatusService
             ->findCached($this->payment_generic_status_id)

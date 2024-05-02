@@ -1,26 +1,23 @@
 <?php
 
-namespace App\DTOs\User;
+namespace App\DTOs\Authentication;
 
-class UserCreationDto
+class LoginDto
 {
-    public string $name;
     public string $email;
     public string $password;
 
     /**
-     * @param array{ name: string, email: string, password: string } $data
+     * @param array{ email: string, password: string } $data
      */
     public function __construct(array $data)
     {
-        $this->name = $data['name'];
         $this->email = $data['email'];
         $this->password = $data['password'];
     }
 
     /**
-     * @param array{ name: string, email: string, password: string } $data
-     * @return self
+     * @param array{ email: string, password: string } $data
      */
     public static function fromRequest(array $data): self
     {

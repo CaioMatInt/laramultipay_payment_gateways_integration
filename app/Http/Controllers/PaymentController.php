@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\Payment\PaymentCreationDto;
 use App\Http\Requests\Payment\StorePaymentRequest;
 use App\Http\Resources\PaymentResource;
 use App\Services\Payment\PaymentService;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
-use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -16,10 +16,10 @@ class PaymentController extends Controller
     {
     }
 
-    public function store(StorePaymentRequest $request)
+    public function store(StorePaymentRequest $request): PaymentResource
     {
-        //@@TODO: Must handle exceptions
-        $payment = $this->service->create($request->validated());
+        $paymentCreationDto = PaymentCreationDto::fromRequest($request->only(['amount', 'currency', 'payment_method']));
+        $payment = $this->service->create($paymentCreationDto);
 
         return new PaymentResource(
             $payment,

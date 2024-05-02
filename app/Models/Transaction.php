@@ -19,7 +19,7 @@ class Transaction extends Model
         'payment_id',
     ];
 
-    protected function casts()
+    protected function casts(): array
     {
         return [
             'date' => 'date',

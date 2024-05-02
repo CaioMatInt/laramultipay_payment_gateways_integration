@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\Authentication\LoginDto;
 use App\DTOs\User\UserCreationDto;
 use App\Http\Requests\User\LoginCallbackOfProviderRequest;
 use App\Http\Requests\User\LoginRequest;
@@ -13,24 +14,22 @@ use App\Http\Resources\User\UserLoginResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Company;
 use App\Services\Authentication\ProviderService;
-use App\Services\Company\CompanyService;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class UserController extends Controller
+class AuthenticationController extends Controller
 {
-    //@@TODO: This should be names ad AuthenticationController
     public function __construct(
         private readonly UserService $userService,
-        private readonly ProviderService $providerService,
-        private readonly CompanyService $companyService
+        private readonly ProviderService $providerService
     ) { }
 
     public function login(LoginRequest $request): Response
     {
-        $this->userService->login($request->email, $request->password);
+        $loginDto = LoginDto::fromRequest($request->only('email', 'password'));
+        $this->userService->login($loginDto);
         $userToken = $this->userService->createUserToken();
         return response(UserLoginResource::make([
             'user' => auth()->user(),
@@ -59,8 +58,7 @@ class UserController extends Controller
 
     public function register(RegisterRequest $request): Response
     {
-        $data = $request->only('name', 'email', 'password');
-        $userCreationData = UserCreationDto::fromRequest($data);
+        $userCreationData = UserCreationDto::fromRequest($request->only('name', 'email', 'password'));
         $this->userService->create($userCreationData);
         Company::create([
             'name' => $request->company_name

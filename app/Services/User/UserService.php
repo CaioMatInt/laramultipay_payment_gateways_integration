@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\DTOs\Authentication\LoginDto;
 use App\DTOs\User\UserCreationDto;
 use App\Enums\UserType\UserTypeEnum;
 use App\Exceptions\Authentication\ProviderMismatchException;
@@ -22,9 +23,9 @@ class UserService
         private readonly UserTypeService $userTypeService
     ) { }
 
-    public function login(string $email, string $password): void
+    public function login(LoginDto $dto): void
     {
-        $authAttemptWasSuccessful = Auth::attempt(['email' => $email, 'password' => $password]);
+        $authAttemptWasSuccessful = Auth::attempt(['email' => $dto->email, 'password' => $dto->password]);
 
         if (!$authAttemptWasSuccessful) {
             throw ValidationException::withMessages([

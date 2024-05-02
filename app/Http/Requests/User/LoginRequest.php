@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'email' => ['required','email', new EmailIsVerifiedRule()],
@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function all($keys = null)
+    public function all($keys = null): array
     {
         $data = parent::all();
 
