@@ -115,4 +115,9 @@ class UserService
 
         return $user->provider->name ?? null;
     }
+
+    public function findByExternalProviderId(string $externalProviderId): ?User
+    {
+        return $this->model->where('external_provider_id', $externalProviderId)->first();
+    }
 }

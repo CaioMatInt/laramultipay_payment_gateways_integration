@@ -27,7 +27,7 @@ class Provider extends Model
         return $this->hasMany(User::class);
     }
 
-    public function scopeSelectIdByName($query, $name)
+    public function scopeGetIdByName($query, $name)
     {
         return $query->select('id')->where('name', $name);
     }

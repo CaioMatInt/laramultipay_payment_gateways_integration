@@ -6,6 +6,7 @@ use App\Models\Provider;
 use App\Models\User;
 use App\Services\User\UserService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProviderService
@@ -36,7 +37,7 @@ class ProviderService
 
     protected function findOrCreateUserFromProviderData(object $providerSocialiteUser, string $providerName): User
     {
-        $user = User::whereExternalProviderId($providerSocialiteUser->id)->first();
+        $user = $this->userService->findByExternalProviderId($providerSocialiteUser->id);
 
         if (!$user) {
             $this->userService->checkProviderMatchOrThrow($providerSocialiteUser->email, $providerName);
@@ -51,8 +52,15 @@ class ProviderService
         return $this->userModel->create([
             'name' => $providerSocialiteUser->name ?? $providerSocialiteUser->nickname,
             'email' => $providerSocialiteUser->email,
-            'provider_id' => Provider::selectIdByName($providerName)->firstOrFail()->id,
+            'provider_id' => $this->getIdByName($providerName),
             'external_provider_id' => $providerSocialiteUser->id,
         ]);
+    }
+
+    public function getIdByName(string $name): int
+    {
+        return Cache::rememberForever('provider_id_' . $name, function () use ($name) {
+            return Provider::getIdByName($name)->firstOrFail()->id;
+        });
     }
 }
