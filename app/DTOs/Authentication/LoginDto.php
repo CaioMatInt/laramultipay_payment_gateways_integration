@@ -2,11 +2,12 @@
 
 namespace App\DTOs\Authentication;
 
-use App\DTOs\BaseDto;
-use App\Traits\DtoHandleDataTrait;
+use App\Traits\RequestDataBinderTrait;
 
-class LoginDto extends BaseDto
+class LoginDto
 {
+    use RequestDataBinderTrait;
+
     public string $email;
     public string $password;
 

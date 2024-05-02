@@ -2,10 +2,12 @@
 
 namespace App\DTOs\Payment;
 
-use App\DTOs\BaseDto;
+use App\Traits\RequestDataBinderTrait;
 
-class PaymentCreationDto extends BaseDto
+class PaymentCreationDto
 {
+    use RequestDataBinderTrait;
+
     public int $amount;
     public string $currency;
     public string $payment_method;

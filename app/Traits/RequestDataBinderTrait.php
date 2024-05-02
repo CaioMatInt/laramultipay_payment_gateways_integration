@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTOs;
+namespace App\Traits;
 
-class BaseDto
+trait RequestDataBinderTrait
 {
     /**
      * @param array{ email: string, password: string } $data
