@@ -15,7 +15,8 @@ class ProviderService
     public function __construct(
         private User $userModel,
         private SocialiteService $socialiteService,
-        private UserService $userService
+        private UserService $userService,
+        private Provider $model
     ) { }
 
     public function redirect(string $providerName): RedirectResponse
@@ -60,7 +61,7 @@ class ProviderService
     public function getIdByName(string $name): int
     {
         return Cache::rememberForever('provider_id_' . $name, function () use ($name) {
-            return Provider::getIdByName($name)->firstOrFail()->id;
+            return $this->model::getIdByName($name)->firstOrFail()->id;
         });
     }
 }
