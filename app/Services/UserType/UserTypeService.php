@@ -4,6 +4,7 @@ namespace App\Services\UserType;
 
 use App\Models\Payment;
 use App\Models\UserType;
+use Illuminate\Support\Facades\Cache;
 
 class UserTypeService
 {
@@ -12,9 +13,10 @@ class UserTypeService
 
     ) { }
 
-    public function findByName(string $name): UserType
+    public function findCachedByName(string $name): UserType
     {
-        //@@TODO add caching
-        return $this->model->where('name', $name)->first();
+        return Cache::rememberForever('user_type_' . $name, function () use ($name) {
+            return $this->model->where('name', $name)->firstOrFail();
+        });
     }
 }

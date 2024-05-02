@@ -18,8 +18,8 @@ class PaymentService
     {
         $data['user_id'] = auth()->user()->id;
         $data['company_id'] = auth()->user()->company_id;
-        $data['payment_generic_status_id'] = $this->paymentGenericStatusService->getInitialStatus()->id;
-        $data['payment_method_id'] = $this->paymentMethodService->findByName($data['payment_method'])->id;
+        $data['payment_generic_status_id'] = $this->paymentGenericStatusService->getCachedInitialStatus()->id;
+        $data['payment_method_id'] = $this->paymentMethodService->findCachedByName($data['payment_method'])->id;
         return $this->model->create($data);
     }
 }

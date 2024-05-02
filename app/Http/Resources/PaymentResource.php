@@ -25,12 +25,12 @@ class PaymentResource extends JsonResource
 
         $paymentGenericStatusName = $this
             ->paymentGenericStatusService
-            ->find($this->payment_generic_status_id)
+            ->findCached($this->payment_generic_status_id)
             ->name;
 
         $paymentMethodName = $this
             ->paymentMethodService
-            ->find($this->payment_method_id)
+            ->findCached($this->payment_method_id)
             ->name;
 
         return [

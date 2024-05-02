@@ -21,7 +21,6 @@ class HandleDatabaseTransactions
         try {
             $response = $next($request);
 
-            dd($response);
             if ($response->exception) {
                 DB::rollBack();
             } else {

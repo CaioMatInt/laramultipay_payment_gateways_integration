@@ -3,6 +3,7 @@
 namespace App\Services\PaymentMethod;
 
 use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\Cache;
 
 class PaymentMethodService
 {
@@ -10,15 +11,17 @@ class PaymentMethodService
         private readonly PaymentMethod $model,
     ) { }
 
-    public function findByName(string $name): PaymentMethod
+    public function findCachedByName(string $name): PaymentMethod
     {
-        //@@TODO add caching
-        return $this->model->whereName($name)->first();
+        return Cache::rememberForever('payment_method_' . $name, function () use ($name) {
+            return $this->model->where('name', $name)->firstOrFail();
+        });
     }
 
-    public function find(int $id): PaymentMethod
+    public function findCached(int $id): PaymentMethod
     {
-        //@@TODO add caching
-        return $this->model->findOrFail($id);
+        return Cache::rememberForever('payment_method_' . $id, function () use ($id) {
+            return $this->model->findOrFail($id);
+        });
     }
 }

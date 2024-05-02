@@ -7,6 +7,7 @@ use App\Http\Resources\PaymentResource;
 use App\Services\Payment\PaymentService;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {

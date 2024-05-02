@@ -102,7 +102,7 @@ class UserService
     public function create(array $data): User
     {
         $data['password'] = bcrypt($data['password']);
-        $companyAdminUserTypeId = $this->userTypeService->findByName(UserTypeEnum::COMPANY_ADMIN->value)->id;
+        $companyAdminUserTypeId = $this->userTypeService->findCachedByName(UserTypeEnum::COMPANY_ADMIN->value)->id;
         $data['user_type_id'] = $companyAdminUserTypeId;
         return $this->model->create($data);
     }

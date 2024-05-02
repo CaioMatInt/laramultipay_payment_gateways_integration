@@ -4,6 +4,7 @@ namespace App\Services\PaymentGenericStatus;
 
 use App\Enums\Payment\PaymentGenericStatusEnum;
 use App\Models\PaymentGenericStatus;
+use Illuminate\Support\Facades\Cache;
 
 class PaymentGenericStatusService
 {
@@ -11,13 +12,17 @@ class PaymentGenericStatusService
         private readonly PaymentGenericStatus $model
     ) { }
 
-    public function getInitialStatus(): PaymentGenericStatus
+    public function getCachedInitialStatus(): PaymentGenericStatus
     {
-        return $this->model->whereName(PaymentGenericStatusEnum::PENDING->value)->first();
+        return Cache::rememberForever('payment_generic_status_initial', function () {
+            return $this->model->whereName(PaymentGenericStatusEnum::PENDING->value)->first();
+        });
     }
 
-    public function find(int $id): PaymentGenericStatus
+    public function findCached(int $id): PaymentGenericStatus
     {
-        return $this->model->findOrFail($id);
+        return Cache::rememberForever("payment_generic_status_{$id}", function () use ($id) {
+            return $this->model->find($id);
+        });
     }
 }
