@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Traits;
+namespace App\DTOs;
 
-trait DtoHandleDataTrait
+class BaseDto
 {
     /**
      * @param array{ email: string, password: string } $data

@@ -2,12 +2,10 @@
 
 namespace App\DTOs\User;
 
-use App\Traits\DtoHandleDataTrait;
+use App\DTOs\BaseDto;
 
-class UserCreationDto
+class UserCreationDto extends BaseDto
 {
-    use DtoHandleDataTrait;
-
     public string $name;
     public string $email;
     public string $password;
