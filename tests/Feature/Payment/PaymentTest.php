@@ -10,7 +10,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 uses(\Tests\Traits\UserTrait::class);
 uses(\Tests\Traits\PaymentTrait::class);
 
-describe('payments', function () {
+describe('payments.store', function () {
 
     beforeEach(function () {
         test()->mockUser();
