@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\DTOs\User\UserCreationDto;
 use App\Enums\UserType\UserTypeEnum;
 use App\Exceptions\Authentication\ProviderMismatchException;
 use App\Models\User;
@@ -99,19 +100,26 @@ class UserService
         }
     }
 
-    public function create(array $data): User
+    public function create(UserCreationDto $dto): User
     {
-        $data['password'] = bcrypt($data['password']);
         $companyAdminUserTypeId = $this->userTypeService->findCachedByName(UserTypeEnum::COMPANY_ADMIN->value)->id;
-        $data['user_type_id'] = $companyAdminUserTypeId;
+
+        $data = [
+            'name' => $dto->name,
+            'email' => $dto->email,
+            'password' => bcrypt($dto->password),
+            'user_type_id' => $companyAdminUserTypeId
+        ];
+
         return $this->model->create($data);
     }
 
     public function findUserProviderByEmail(string $email): ?string
     {
-        $user = $this->model->where('email', $email)
+        $user = $this->model->select(['id', 'provider_id'])
+            ->where('email', $email)
             ->with(['provider:id,name'])
-            ->first(['id']);
+            ->first();
 
         return $user->provider->name ?? null;
     }

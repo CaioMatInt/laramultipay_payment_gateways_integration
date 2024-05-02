@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Company;
+use App\Models\Provider;
 use App\Models\UserType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -34,6 +35,8 @@ class UserFactory extends Factory
             'company_id' => Company::factory(),
             'user_type_id' => UserType::factory(),
             'remember_token' => Str::random(10),
+            'provider_id' => Provider::factory(),
+            'external_provider_id' => Str::random(10),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

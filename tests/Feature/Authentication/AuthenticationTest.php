@@ -98,7 +98,7 @@ describe('auth', function () {
     });
 
     test('can register user with valid data', function () {
-        $userTypeCompanyAdmin = $this->createCompanyAdmin();
+        $userTypeCompanyAdmin = $this->createUserTypeCompanyAdmin();
 
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['name', 'email']);
@@ -115,7 +115,7 @@ describe('auth', function () {
     });
 
     test('should create a company for the new registered user', function () {
-        $this->createCompanyAdmin();
+        $this->createUserTypeCompanyAdmin();
 
         $userFactoryData = User::factory()->make();
         $userData = $userFactoryData->only(['name', 'email']);

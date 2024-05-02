@@ -9,10 +9,6 @@ class Provider extends Model
 {
     use HasFactory;
 
-    const GOOGLE = 'google';
-    const FACEBOOK = 'facebook';
-    const GITHUB = 'github';
-
     protected $fillable = [
         'name'
     ];

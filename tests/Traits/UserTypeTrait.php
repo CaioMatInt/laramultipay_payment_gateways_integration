@@ -7,7 +7,7 @@ use App\Models\UserType;
 
 trait UserTypeTrait
 {
-    public function createCompanyAdmin(): UserType
+    public function createUserTypeCompanyAdmin(): UserType
     {
         return UserType::factory()->create([
             'name' => UserTypeEnum::COMPANY_ADMIN->value

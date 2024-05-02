@@ -10,7 +10,6 @@ class UserTypeService
 {
     public function __construct(
         private readonly UserType $model,
-
     ) { }
 
     public function findCachedByName(string $name): UserType

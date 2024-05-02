@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\User\UserCreationDto;
 use App\Http\Requests\User\LoginCallbackOfProviderRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RedirectToLoginWithProviderRequest;
@@ -59,7 +60,8 @@ class UserController extends Controller
     public function register(RegisterRequest $request): Response
     {
         $data = $request->only('name', 'email', 'password');
-        $this->userService->create($data);
+        $userCreationData = UserCreationDto::fromRequest($data);
+        $this->userService->create($userCreationData);
         Company::create([
             'name' => $request->company_name
         ]);

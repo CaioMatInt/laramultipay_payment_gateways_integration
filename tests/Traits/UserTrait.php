@@ -33,7 +33,7 @@ trait UserTrait
 
     public function mockCompanyAdminUser(): void
     {
-        $companyAdminUserType = $this->createCompanyAdmin();
+        $companyAdminUserType = $this->createUserTypeCompanyAdmin();
 
         $this->userCompanyAdmin = User::factory()->create([
             'password' => Hash::make($this->unhashedDefaultUserPassword),
