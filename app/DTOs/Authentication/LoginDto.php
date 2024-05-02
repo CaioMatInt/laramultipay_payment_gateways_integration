@@ -2,8 +2,12 @@
 
 namespace App\DTOs\Authentication;
 
+use App\Traits\DtoHandleDataTrait;
+
 class LoginDto
 {
+    use DtoHandleDataTrait;
+
     public string $email;
     public string $password;
 
@@ -14,13 +18,5 @@ class LoginDto
     {
         $this->email = $data['email'];
         $this->password = $data['password'];
-    }
-
-    /**
-     * @param array{ email: string, password: string } $data
-     */
-    public static function fromRequest(array $data): self
-    {
-        return new self($data);
     }
 }

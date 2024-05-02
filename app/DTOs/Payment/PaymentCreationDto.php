@@ -2,8 +2,12 @@
 
 namespace App\DTOs\Payment;
 
+use App\Traits\DtoHandleDataTrait;
+
 class PaymentCreationDto
 {
+    use DtoHandleDataTrait;
+
     public int $amount;
     public string $currency;
     public string $payment_method;
@@ -17,14 +21,5 @@ class PaymentCreationDto
         $this->amount = $data['amount'];
         $this->currency = $data['currency'];
         $this->payment_method = $data['payment_method'];
-    }
-
-    /**
-     * @param array{ amount: integer, currency: string, payment_method: string } $data
-     * @return self
-     */
-    public static function fromRequest(array $data): self
-    {
-        return new self($data);
     }
 }

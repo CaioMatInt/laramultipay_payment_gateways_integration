@@ -2,8 +2,12 @@
 
 namespace App\DTOs\User;
 
+use App\Traits\DtoHandleDataTrait;
+
 class UserCreationDto
 {
+    use DtoHandleDataTrait;
+
     public string $name;
     public string $email;
     public string $password;
@@ -16,14 +20,5 @@ class UserCreationDto
         $this->name = $data['name'];
         $this->email = $data['email'];
         $this->password = $data['password'];
-    }
-
-    /**
-     * @param array{ name: string, email: string, password: string } $data
-     * @return self
-     */
-    public static function fromRequest(array $data): self
-    {
-        return new self($data);
     }
 }
