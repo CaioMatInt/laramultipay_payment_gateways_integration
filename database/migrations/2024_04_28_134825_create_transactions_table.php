@@ -11,6 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
+            //@@TODO: migrate to uuid
             $table->id();
             $table->foreignIdFor(Payment::class);
             $table->foreignIdFor(PaymentGatewayTransactionStatus::class);
