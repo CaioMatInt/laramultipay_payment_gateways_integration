@@ -18,25 +18,26 @@ describe('PaymentService', function () {
 
     beforeEach(function () {
         $this->paymentService = app(PaymentService::class);
-    });
 
-    test('can create a payment', function () {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
 
-        $initialPaymentStatus = PaymentGenericStatus::factory()->create([
+        $this->pendingPaymentStatus = PaymentGenericStatus::factory()->create([
             'name' => PaymentGenericStatusEnum::PENDING,
         ]);
 
-        $paymentGenericStatusService = Mockery::mock(PaymentGenericStatusService::class);
-        $paymentGenericStatusService->shouldReceive('getCachedInitialStatus')->andReturn($initialPaymentStatus);
-
-        $paymentMethod = PaymentMethod::factory()->create([
+        $this->creditCardPaymentMethod = PaymentMethod::factory()->create([
             'name' => PaymentMethodEnum::CREDIT_CARD->value,
         ]);
+    });
+
+    test('can create a payment', function () {
+        $paymentGenericStatusService = Mockery::mock(PaymentGenericStatusService::class);
+        $paymentGenericStatusService->shouldReceive('getCachedInitialStatus')
+            ->andReturn($this->pendingPaymentStatus);
 
         $paymentMethodService = Mockery::mock(PaymentMethodService::class);
-        $paymentMethodService->shouldReceive('findCachedByName')->andReturn($paymentMethod);
+        $paymentMethodService->shouldReceive('findCachedByName')->andReturn($this->creditCardPaymentMethod);
 
         $amount = 100;
         $paymentCreationDto = new PaymentCreationDto([
@@ -54,74 +55,56 @@ describe('PaymentService', function () {
         $payment = $paymentService->create($paymentCreationDto);
 
         expect($payment->amount)->toBe(100)
-            ->and($payment->user_id)->toBe($user->id)
-            ->and($payment->company_id)->toBe($user->company_id)
+            ->and($payment->user_id)->toBe($this->user->id)
+            ->and($payment->company_id)->toBe($this->user->company_id)
             ->and($payment->currency)->toBe(PaymentCurrencyEnum::USD->value)
-            ->and($payment->payment_generic_status_id)->toBe($initialPaymentStatus->id)
-            ->and($payment->payment_method_id)->toBe($paymentMethod->id);
+            ->and($payment->payment_generic_status_id)->toBe($this->pendingPaymentStatus->id)
+            ->and($payment->payment_method_id)->toBe($this->creditCardPaymentMethod->id);
 
         $this->assertDatabaseHas('payments', [
             'amount' => $amount,
-            'user_id' => $user->id,
-            'company_id' => $user->company_id,
+            'user_id' => $this->user->id,
+            'company_id' => $this->user->company_id,
             'currency' => PaymentCurrencyEnum::USD->value,
-            'payment_generic_status_id' => $initialPaymentStatus->id,
-            'payment_method_id' => $paymentMethod->id,
+            'payment_generic_status_id' => $this->pendingPaymentStatus->id,
+            'payment_method_id' => $this->creditCardPaymentMethod->id,
         ]);
     });
 
     test('can get paginated payments by company id', function () {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $currency = PaymentCurrencyEnum::USD->value;
-        $paymentMethod = PaymentMethod::factory()->create([
-            'name' => PaymentMethodEnum::CREDIT_CARD->value,
-        ]);
-        $paymentGenericStatus = PaymentGenericStatus::factory()->create([
-            'name' => PaymentGenericStatusEnum::PENDING,
-        ]);
 
         $payments = Payment::factory(5)->create([
-            'company_id' => $user->company_id,
+            'company_id' => $this->user->company_id,
             'currency' => $currency,
-            'payment_method_id' => $paymentMethod->id,
-            'payment_generic_status_id' => $paymentGenericStatus->id,
+            'payment_method_id' => $this->creditCardPaymentMethod->id,
+            'payment_generic_status_id' => $this->pendingPaymentStatus->id,
         ]);
 
-        $foundPayments = $this->paymentService->getPaginatedByCompanyId($user->company_id);
+        $foundPayments = $this->paymentService->getPaginatedByCompanyId($this->user->company_id);
 
         expect($foundPayments->count())->toBe(5);
 
         foreach ($foundPayments->toArray()['data'] as $key => $payment) {
             expect($payment['uuid'])->toBe($payments[$key]->uuid)
-                ->and($payment['company_id'])->toBe($user->company_id)
+                ->and($payment['company_id'])->toBe($this->user->company_id)
                 ->and($payment['currency'])->toBe($currency)
-                ->and($payment['payment_method_id'])->toBe($paymentMethod->id)
-                ->and($payment['payment_generic_status_id'])->toBe($paymentGenericStatus->id);
+                ->and($payment['payment_method_id'])->toBe($this->creditCardPaymentMethod->id)
+                ->and($payment['payment_generic_status_id'])->toBe($this->pendingPaymentStatus->id);
         }
     });
 
     test('should return a maximum of 15 payments per company ID by default', function () {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $currency = PaymentCurrencyEnum::USD->value;
-        $paymentMethod = PaymentMethod::factory()->create([
-            'name' => PaymentMethodEnum::CREDIT_CARD->value,
-        ]);
-        $paymentGenericStatus = PaymentGenericStatus::factory()->create([
-            'name' => PaymentGenericStatusEnum::PENDING,
-        ]);
 
         Payment::factory(20)->create([
-            'company_id' => $user->company_id,
+            'company_id' => $this->user->company_id,
             'currency' => $currency,
-            'payment_method_id' => $paymentMethod->id,
-            'payment_generic_status_id' => $paymentGenericStatus->id,
+            'payment_method_id' => $this->creditCardPaymentMethod->id,
+            'payment_generic_status_id' => $this->pendingPaymentStatus->id,
         ]);
 
-        $foundPayments = $this->paymentService->getPaginatedByCompanyId($user->company_id);
+        $foundPayments = $this->paymentService->getPaginatedByCompanyId($this->user->company_id);
 
         expect($foundPayments->count())->toBe(15);
     });

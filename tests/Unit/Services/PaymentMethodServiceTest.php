@@ -9,48 +9,41 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 describe('PaymentMethodServiceTest', function () {
 
     beforeEach(function () {
-        $this->paymentMethodService = app(PaymentMethodService::class);
+        $this->randomPaymentMethodService = app(PaymentMethodService::class);
+        $this->randomPaymentMethod = PaymentMethod::factory()->create();
     });
 
     test('can find by name', function () {
-        $paymentMethod = PaymentMethod::factory()->create();
-
-        $paymentMethod = $this->paymentMethodService->findCachedByName($paymentMethod->name);
+       $paymentMethod = $this->randomPaymentMethodService->findCachedByName($this->randomPaymentMethod->name);
 
         expect($paymentMethod->id)->toBe($paymentMethod->id)
             ->and($paymentMethod->name)->toBe($paymentMethod->name);
     });
 
     test('should cache find by name result', function () {
-        $paymentMethod = PaymentMethod::factory()->create();
+        $this->randomPaymentMethodService->findCachedByName($this->randomPaymentMethod->name);
 
-        $this->paymentMethodService->findCachedByName($paymentMethod->name);
+        expect(Cache::has('payment_method_' . $this->randomPaymentMethod->name))->toBeTrue();
 
-        expect(Cache::has('payment_method_' . $paymentMethod->name))->toBeTrue();
-
-        $cachedPaymentMethod = Cache::get('payment_method_' . $paymentMethod->name);
-        expect($cachedPaymentMethod->id)->toBe($paymentMethod->id)
-            ->and($cachedPaymentMethod->name)->toBe($paymentMethod->name);
+        $cachedPaymentMethod = Cache::get('payment_method_' . $this->randomPaymentMethod->name);
+        expect($cachedPaymentMethod->id)->toBe($this->randomPaymentMethod->id)
+            ->and($cachedPaymentMethod->name)->toBe($this->randomPaymentMethod->name);
     });
 
     test('can find by id', function () {
-        $paymentMethod = PaymentMethod::factory()->create();
-
-        $paymentMethod = $this->paymentMethodService->findCached($paymentMethod->id);
+        $paymentMethod = $this->randomPaymentMethodService->findCached($this->randomPaymentMethod->id);
 
         expect($paymentMethod->id)->toBe($paymentMethod->id)
             ->and($paymentMethod->name)->toBe($paymentMethod->name);
     });
 
     test('should cache find by id result', function () {
-        $paymentMethod = PaymentMethod::factory()->create();
+        $this->randomPaymentMethodService->findCached($this->randomPaymentMethod->id);
 
-        $this->paymentMethodService->findCached($paymentMethod->id);
+        expect(Cache::has('payment_method_' . $this->randomPaymentMethod->id))->toBeTrue();
 
-        expect(Cache::has('payment_method_' . $paymentMethod->id))->toBeTrue();
-
-        $cachedPaymentMethod = Cache::get('payment_method_' . $paymentMethod->id);
-        expect($cachedPaymentMethod->id)->toBe($paymentMethod->id)
-            ->and($cachedPaymentMethod->name)->toBe($paymentMethod->name);
+        $cachedPaymentMethod = Cache::get('payment_method_' . $this->randomPaymentMethod->id);
+        expect($cachedPaymentMethod->id)->toBe($this->randomPaymentMethod->id)
+            ->and($cachedPaymentMethod->name)->toBe($this->randomPaymentMethod->name);
     });
 });
