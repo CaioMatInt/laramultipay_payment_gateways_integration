@@ -8,6 +8,7 @@ use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class PaymentService
 {
@@ -17,13 +18,15 @@ class PaymentService
         private readonly PaymentMethodService $paymentMethodService,
     ) { }
 
-    public function getByCompanyId(int $companyId, int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedByCompanyId(int $companyId, int $perPage = 15): LengthAwarePaginator
     {
+        //@@TODO: Add caching
         return $this->model->where('company_id', $companyId)->paginate($perPage);
     }
 
     public function create(PaymentCreationDto $dto): Payment
     {
+        $data['uuid'] = Str::uuid();
         $data['user_id'] = auth()->user()->id;
         $data['company_id'] = auth()->user()->company_id;
         $data['payment_generic_status_id'] = $this->paymentGenericStatusService->getCachedInitialStatus()->id;
@@ -33,10 +36,10 @@ class PaymentService
         return $this->model->create($data);
     }
 
-    public function findCached(int $id): Payment
+    public function findCached(string $uuid): Payment
     {
-        return Cache::rememberForever("payment.{$id}", function () use ($id) {
-            return $this->model->findOrFail($id);
+        return Cache::rememberForever("payment.{$uuid}", function () use ($uuid) {
+            return $this->model->where('uuid', $uuid)->firstOrFail();
         });
     }
 }

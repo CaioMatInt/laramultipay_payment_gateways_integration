@@ -42,7 +42,7 @@ class PaymentResource extends JsonResource
             ->name;
 
         return [
-            'id' => $this->id,
+            'uuid' => $this->uuid,
             'amount' => $this->amount,
             'payment_generic_status' => $paymentGenericStatusName,
             'payment_method' => $paymentMethodName,

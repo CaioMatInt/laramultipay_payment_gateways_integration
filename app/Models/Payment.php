@@ -13,6 +13,7 @@ class Payment extends Model
     use SoftDeletes, HasFactory;
 
     protected $fillable = [
+        'uuid',
         'amount',
         'user_id',
         'company_id',

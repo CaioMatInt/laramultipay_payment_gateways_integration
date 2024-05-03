@@ -39,7 +39,7 @@ describe('payments.index', function () {
         $response->assertJsonCount(5, 'data');
         foreach ($payments as $payment) {
             $response->assertJsonFragment([
-                'id' => $payment->id,
+                'uuid' => $payment->uuid,
                 'amount' => $payment->amount,
                 'payment_generic_status' => PaymentGenericStatusEnum::PENDING->value,
                 'payment_method' => PaymentMethodEnum::CREDIT_CARD->value,

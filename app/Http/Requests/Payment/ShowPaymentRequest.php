@@ -22,22 +22,22 @@ class ShowPaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer',
+            'uuid' => 'required|string',
         ];
     }
 
     public function prepareForValidation(): void
     {
         $this->merge([
-            'id' => $this->route('id')
+            'uuid' => $this->route('uuid')
         ]);
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'The payment ID query parameter is required.',
-            'id.integer' => 'The payment ID query parameter must be an integer.',
+            'id.required' => 'The payment UUID query parameter is required.',
+            'id.integer' => 'The payment UUID query parameter must be an uuid string.'
         ];
     }
 }

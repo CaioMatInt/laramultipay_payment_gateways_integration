@@ -19,7 +19,7 @@ class PaymentController extends Controller
 
     public function index(PaymentIndexRequest $request)
     {
-        $payments = $this->service->getByCompanyId(
+        $payments = $this->service->getPaginatedByCompanyId(
             auth()->user()->company_id,
             $request->perPage ?? self::INDEX_DEFAULT_PER_PAGE
         );
@@ -27,10 +27,9 @@ class PaymentController extends Controller
         return PaymentResource::collection($payments);
     }
 
-    //@@TODO: migrate from id to UUID
-    public function show(ShowPaymentRequest $request, int $id): PaymentResource
+    public function show(ShowPaymentRequest $request, string $uuid): PaymentResource
     {
-        $payment = $this->service->findCached($id);
+        $payment = $this->service->findCached($uuid);
 
         return new PaymentResource(
             $payment
