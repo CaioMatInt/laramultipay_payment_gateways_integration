@@ -59,6 +59,68 @@ describe('payments.index', function () {
         $response->assertOk();
         $response->assertJsonCount(0, 'data');
     });
+
+    test('can get payments with pagination', function () {
+        $this->actingAs($this->userCompanyAdmin);
+
+        $paymentGenericStatus = PaymentGenericStatus::factory()->create(
+            [
+                'name' => PaymentGenericStatusEnum::PENDING->value
+            ]
+        );
+
+        $paymentMethod = PaymentMethod::factory()->create(['name' => PaymentMethodEnum::CREDIT_CARD->value]);
+
+        Payment::factory(15)->create([
+            'payment_generic_status_id' => $paymentGenericStatus->id,
+            'payment_method_id' => $paymentMethod->id,
+            'company_id' => $this->userCompanyAdmin->company_id
+        ]);
+
+        $response = $this->getJson(route('payment.index', ['perPage' => 5]));
+        $response->assertOk();
+        $response->assertJsonCount(5, 'data');
+        
+        $response->assertJsonStructure([
+            'meta' => [
+                'current_page',
+                'from',
+                'last_page',
+                'path',
+                'per_page',
+                'to',
+                'total',
+            ],
+            'links' => [
+                'first',
+                'last',
+                'prev',
+                'next',
+            ],
+        ]);
+    });
+
+    test('should return only fifteen payments per page if perPage is not defined', function () {
+        $this->actingAs($this->userCompanyAdmin);
+
+        $paymentGenericStatus = PaymentGenericStatus::factory()->create(
+            [
+                'name' => PaymentGenericStatusEnum::PENDING->value
+            ]
+        );
+
+        $paymentMethod = PaymentMethod::factory()->create(['name' => PaymentMethodEnum::CREDIT_CARD->value]);
+
+        Payment::factory(16)->create([
+            'payment_generic_status_id' => $paymentGenericStatus->id,
+            'payment_method_id' => $paymentMethod->id,
+            'company_id' => $this->userCompanyAdmin->company_id
+        ]);
+
+        $response = $this->getJson(route('payment.index'));
+        $response->assertOk();
+        $response->assertJsonCount(15, 'data');
+    });
 });
 
 describe('payments.store', function () {

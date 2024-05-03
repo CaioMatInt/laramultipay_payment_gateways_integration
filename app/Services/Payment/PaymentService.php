@@ -6,7 +6,7 @@ use App\DTOs\Payment\PaymentCreationDto;
 use App\Models\Payment;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PaymentService
 {
@@ -16,9 +16,9 @@ class PaymentService
         private readonly PaymentMethodService $paymentMethodService,
     ) { }
 
-    public function getByCompanyId(int $companyId): Collection
+    public function getByCompanyId(int $companyId, int $perPage = 15): LengthAwarePaginator
     {
-        return $this->model->where('company_id', $companyId)->get();
+        return $this->model->where('company_id', $companyId)->paginate($perPage);
     }
 
     public function create(PaymentCreationDto $dto): Payment

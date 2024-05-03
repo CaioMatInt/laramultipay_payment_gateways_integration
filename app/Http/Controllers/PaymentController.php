@@ -3,22 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\Payment\PaymentCreationDto;
+use App\Http\Requests\Payment\PaymentIndexRequest;
 use App\Http\Requests\Payment\StorePaymentRequest;
 use App\Http\Resources\Payment\PaymentResource;
 use App\Services\Payment\PaymentService;
-use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
-use App\Services\PaymentMethod\PaymentMethodService;
 
 class PaymentController extends Controller
 {
+    CONST INDEX_DEFAULT_PER_PAGE = 15;
 
     public function __construct(private readonly PaymentService $service)
     {
     }
 
-    public function index()
+    public function index(PaymentIndexRequest $request)
     {
-        $payments = $this->service->getByCompanyId(auth()->user()->company_id);
+        $payments = $this->service->getByCompanyId(
+            auth()->user()->company_id,
+            $request->perPage ?? self::INDEX_DEFAULT_PER_PAGE
+        );
 
         return PaymentResource::collection($payments);
     }
