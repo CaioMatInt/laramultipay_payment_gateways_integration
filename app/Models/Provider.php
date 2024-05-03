@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,7 +25,7 @@ class Provider extends Model
         return $this->hasMany(User::class);
     }
 
-    public function scopeGetIdByName($query, string $name): self
+    public function scopeGetIdByName($query, string $name): Builder
     {
         return $query->select('id')->where('name', $name);
     }

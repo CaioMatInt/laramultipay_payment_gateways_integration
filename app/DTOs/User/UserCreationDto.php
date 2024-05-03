@@ -2,7 +2,7 @@
 
 namespace App\DTOs\User;
 
-use App\Traits\RequestDataBinderTrait;
+use App\Traits\Dto\RequestDataBinderTrait;
 
 class UserCreationDto
 {

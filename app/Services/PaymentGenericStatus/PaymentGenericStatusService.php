@@ -21,7 +21,7 @@ class PaymentGenericStatusService
 
     public function findCached(int $id): PaymentGenericStatus
     {
-        return Cache::rememberForever("payment_generic_status_{$id}", function () use ($id) {
+        return Cache::rememberForever("payment_generic_status_$id", function () use ($id) {
             return $this->model->findOrFail($id);
         });
     }

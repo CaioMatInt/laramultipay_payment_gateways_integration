@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,7 +21,7 @@ class UserType extends Model
         return $this->hasMany(User::class);
     }
 
-    public function scopeWhereName($query, string $name): self
+    public function scopeWhereName($query, string $name): Builder
     {
         return $query->where('name', $name);
     }

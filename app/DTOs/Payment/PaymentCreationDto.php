@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Payment;
 
-use App\Traits\RequestDataBinderTrait;
+use App\Traits\Dto\RequestDataBinderTrait;
 
 class PaymentCreationDto
 {

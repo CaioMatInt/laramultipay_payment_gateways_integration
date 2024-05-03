@@ -2,7 +2,7 @@
 
 namespace App\DTOs\Authentication;
 
-use App\Traits\RequestDataBinderTrait;
+use App\Traits\Dto\RequestDataBinderTrait;
 
 class LoginDto
 {

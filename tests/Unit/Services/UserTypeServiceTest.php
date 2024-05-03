@@ -5,8 +5,6 @@ use App\Services\UserType\UserTypeService;
 use Illuminate\Support\Facades\Cache;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
-uses(\Tests\Traits\UserTrait::class);
-uses(\Tests\Traits\PaymentTrait::class);
 
 describe('UserTypeServiceTest', function () {
 
