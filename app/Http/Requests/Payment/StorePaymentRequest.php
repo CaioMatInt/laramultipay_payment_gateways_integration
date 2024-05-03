@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Payment;
 
 use App\Enums\Payment\PaymentCurrencyEnum;
-use App\Enums\PaymentGateway\PaymentGatewayEnum;
 use App\Enums\PaymentMethod\PaymentMethodEnum;
 use Illuminate\Foundation\Http\FormRequest;
 

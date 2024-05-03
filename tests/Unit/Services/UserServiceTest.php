@@ -1,12 +1,9 @@
 <?php
 
 use App\DTOs\User\UserCreationDto;
-use App\Enums\UserType\UserTypeEnum;
 use App\Models\User;
-use App\Models\UserType;
 use App\Services\User\UserService;
 use App\Services\UserType\UserTypeService;
-use Illuminate\Support\Facades\Cache;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 uses(\Tests\Traits\UserTypeTrait::class);

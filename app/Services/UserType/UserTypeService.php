@@ -2,7 +2,6 @@
 
 namespace App\Services\UserType;
 
-use App\Models\Payment;
 use App\Models\UserType;
 use Illuminate\Support\Facades\Cache;
 

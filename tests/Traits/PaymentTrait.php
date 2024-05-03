@@ -3,7 +3,6 @@
 namespace Tests\Traits;
 
 use App\Models\Payment;
-use App\Models\PaymentGateway;
 use App\Models\PaymentMethod;
 
 trait PaymentTrait

@@ -3,7 +3,6 @@
 namespace Tests\Traits;
 
 use App\Models\User;
-use App\Models\UserType;
 use Illuminate\Support\Facades\Hash;
 
 trait UserTrait

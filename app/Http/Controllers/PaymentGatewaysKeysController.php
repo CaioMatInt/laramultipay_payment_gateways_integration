@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentGatewaysKeysRequest;
 use App\Http\Resources\PaymentGatewaysKeysResource;
-use App\Models\PaymentGatewayKey;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PaymentGatewaysKeysController extends Controller
 {

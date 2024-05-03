@@ -7,7 +7,6 @@ use App\DTOs\User\UserCreationDto;
 use App\Enums\UserType\UserTypeEnum;
 use App\Exceptions\Authentication\ProviderMismatchException;
 use App\Models\User;
-use App\Models\UserType;
 use App\Services\UserType\UserTypeService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
