@@ -80,7 +80,7 @@ describe('payments.index', function () {
         $response = $this->getJson(route('payment.index', ['perPage' => 5]));
         $response->assertOk();
         $response->assertJsonCount(5, 'data');
-        
+
         $response->assertJsonStructure([
             'meta' => [
                 'current_page',

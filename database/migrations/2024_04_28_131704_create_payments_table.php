@@ -13,6 +13,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
+            //@@TODO: migrate to UUID
             $table->id();
             $table->integer('amount');
             $table->foreignIdFor(User::class);

@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class PaymentService
 {
@@ -30,5 +31,12 @@ class PaymentService
         $data['amount'] = $dto->amount;
         $data['currency'] = $dto->currency;
         return $this->model->create($data);
+    }
+
+    public function findCached(int $id): Payment
+    {
+        return Cache::rememberForever("payment.{$id}", function () use ($id) {
+            return $this->model->findOrFail($id);
+        });
     }
 }

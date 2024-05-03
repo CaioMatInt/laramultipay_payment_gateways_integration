@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTOs\Payment\PaymentCreationDto;
 use App\Http\Requests\Payment\PaymentIndexRequest;
+use App\Http\Requests\Payment\ShowPaymentRequest;
 use App\Http\Requests\Payment\StorePaymentRequest;
 use App\Http\Resources\Payment\PaymentResource;
 use App\Services\Payment\PaymentService;
@@ -24,6 +25,16 @@ class PaymentController extends Controller
         );
 
         return PaymentResource::collection($payments);
+    }
+
+    //@@TODO: migrate from id to UUID
+    public function show(ShowPaymentRequest $request, int $id): PaymentResource
+    {
+        $payment = $this->service->findCached($id);
+
+        return new PaymentResource(
+            $payment
+        );
     }
 
     public function store(StorePaymentRequest $request): PaymentResource
