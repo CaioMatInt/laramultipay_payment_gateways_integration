@@ -19,11 +19,11 @@ class PaymentFactory extends Factory
     {
         return [
             'amount' => $this->faker->randomNumber(),
-            'user' => User::factory(),
-            'company' => Company::factory(),
-            'currency' => $this->faker->unique()->randomElement(PaymentCurrencyEnum::values()),
-            'payment_generic_status_id' => null,
-            'payment_method_id' => null,
+            'user_id' => User::factory(),
+            'company_id' => Company::factory(),
+            'currency' => $this->faker->randomElement(PaymentCurrencyEnum::values()),
+            'payment_generic_status_id' => PaymentGenericStatus::factory(),
+            'payment_method_id' => PaymentMethod::factory(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

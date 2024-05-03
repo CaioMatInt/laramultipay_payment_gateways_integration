@@ -14,7 +14,7 @@ class PaymentMethodFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->randomElement(PaymentMethodEnum::values()),
+            'name' => $this->faker->unique()->randomElement(PaymentMethodEnum::values()),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

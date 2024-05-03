@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTOs\Payment\PaymentCreationDto;
 use App\Http\Requests\Payment\StorePaymentRequest;
-use App\Http\Resources\PaymentResource;
+use App\Http\Resources\Payment\PaymentResource;
 use App\Services\Payment\PaymentService;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
@@ -14,6 +14,14 @@ class PaymentController extends Controller
 
     public function __construct(private readonly PaymentService $service)
     {
+    }
+
+    public function index()
+    {
+
+        $payments = $this->service->getByCompanyId(auth()->user()->company_id);
+
+        return PaymentResource::collection($payments);
     }
 
     public function store(StorePaymentRequest $request): PaymentResource

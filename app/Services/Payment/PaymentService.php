@@ -6,6 +6,7 @@ use App\DTOs\Payment\PaymentCreationDto;
 use App\Models\Payment;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
+use Illuminate\Database\Eloquent\Collection;
 
 class PaymentService
 {
@@ -14,6 +15,11 @@ class PaymentService
         private readonly PaymentGenericStatusService $paymentGenericStatusService,
         private readonly PaymentMethodService $paymentMethodService,
     ) { }
+
+    public function getByCompanyId(int $companyId): Collection
+    {
+        return $this->model->where('company_id', $companyId)->get();
+    }
 
     public function create(PaymentCreationDto $dto): Payment
     {

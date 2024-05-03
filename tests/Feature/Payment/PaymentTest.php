@@ -3,12 +3,63 @@
 use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Enums\Payment\PaymentGenericStatusEnum;
 use App\Enums\PaymentMethod\PaymentMethodEnum;
+use App\Models\Payment;
 use App\Models\PaymentGenericStatus;
 use App\Models\PaymentMethod;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 uses(\Tests\Traits\UserTrait::class);
 uses(\Tests\Traits\PaymentTrait::class);
+
+describe('payments.index', function () {
+    beforeEach(function () {
+        test()->mockCompanyAdminUser();
+    });
+
+    test('can get all payments', function () {
+        $this->actingAs($this->userCompanyAdmin);
+
+        $paymentGenericStatus = PaymentGenericStatus::factory()->create(
+            [
+                'name' => PaymentGenericStatusEnum::PENDING->value
+            ]
+        );
+        $paymentMethod = PaymentMethod::factory()->create(['name' => PaymentMethodEnum::CREDIT_CARD->value]);
+
+        $payments = Payment::factory(5)->create([
+            'company_id' => $this->userCompanyAdmin->company_id,
+            'currency' => PaymentCurrencyEnum::USD->value,
+            'payment_generic_status_id' => $paymentGenericStatus->id,
+            'payment_method_id' => $paymentMethod->id,
+        ]);
+
+        $response = $this->getJson(route('payment.index'));
+        $response->assertOk();
+
+        $response->assertJsonCount(5, 'data');
+        foreach ($payments as $payment) {
+            $response->assertJsonFragment([
+                'id' => $payment->id,
+                'amount' => $payment->amount,
+                'payment_generic_status' => PaymentGenericStatusEnum::PENDING->value,
+                'payment_method' => PaymentMethodEnum::CREDIT_CARD->value,
+            ]);
+        }
+    });
+
+    test('cant get all payments without being authenticated', function () {
+        $response = $this->getJson(route('payment.index'));
+        $response->assertUnauthorized();
+    });
+
+    test('should get an empty array if there are no payments', function () {
+        $this->actingAs($this->userCompanyAdmin);
+
+        $response = $this->getJson(route('payment.index'));
+        $response->assertOk();
+        $response->assertJsonCount(0, 'data');
+    });
+});
 
 describe('payments.store', function () {
 
@@ -26,8 +77,10 @@ describe('payments.store', function () {
         $paymentPayload = $this->getCreatePaymentPayload(
             [
                 'user_id' => $this->userCompanyAdmin->id,
-                'payment_method' => PaymentMethodEnum::CREDIT_CARD->value,
-            ]);
+                'currency' => PaymentCurrencyEnum::USD->value,
+                'payment_method' => PaymentMethodEnum::CREDIT_CARD->value
+            ]
+        );
 
         $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertCreated();

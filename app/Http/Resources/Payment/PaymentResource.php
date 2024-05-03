@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Payment;
 
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
@@ -11,13 +11,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class PaymentResource extends JsonResource
 {
 
+    private readonly PaymentGenericStatusService $paymentGenericStatusService;
+    private readonly PaymentMethodService $paymentMethodService;
+
     public function __construct(
-        $resource,
-        private readonly PaymentGenericStatusService $paymentGenericStatusService,
-        private readonly PaymentMethodService $paymentMethodService,
+        $resource
     )
     {
         parent::__construct($resource);
+        $this->paymentGenericStatusService = app(PaymentGenericStatusService::class);
+        $this->paymentMethodService = app(PaymentMethodService::class);
     }
 
     /**

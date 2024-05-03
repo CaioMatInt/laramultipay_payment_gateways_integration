@@ -32,4 +32,5 @@ Route::prefix('users')->group(function () {
 
 Route::prefix('payments')->middleware('auth:sanctum')->group(function () {
     Route::post('', [PaymentController::class, 'store'])->name('payment.store');
+    Route::get('', [PaymentController::class, 'index'])->name('payment.index');
 });
