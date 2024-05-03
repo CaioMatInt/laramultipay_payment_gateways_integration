@@ -18,7 +18,6 @@ class PaymentController extends Controller
 
     public function index()
     {
-
         $payments = $this->service->getByCompanyId(auth()->user()->company_id);
 
         return PaymentResource::collection($payments);
@@ -30,9 +29,7 @@ class PaymentController extends Controller
         $payment = $this->service->create($paymentCreationDto);
 
         return new PaymentResource(
-            $payment,
-            app(PaymentGenericStatusService::class),
-            app(PaymentMethodService::class)
+            $payment
         );
     }
 }
