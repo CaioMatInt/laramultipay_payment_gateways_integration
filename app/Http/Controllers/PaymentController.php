@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\Payment\PaymentCreationDto;
-use App\Exceptions\InvalidOrNonRedirectablePaymentGatewayException;
+use App\Exceptions\PaymentGateway\InvalidOrNonRedirectablePaymentGatewayException;
 use App\Http\Requests\Payment\PaymentIndexRequest;
 use App\Http\Requests\Payment\ShowPaymentRequest;
 use App\Http\Requests\Payment\StorePaymentRequest;
@@ -11,7 +11,6 @@ use App\Http\Resources\Payment\PaymentResource;
 use App\Services\Payment\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {

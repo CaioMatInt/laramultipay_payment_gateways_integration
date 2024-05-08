@@ -2,7 +2,7 @@
 
 namespace App\Enums\UserType;
 
-use App\Traits\EnumAttributeTrait;
+use App\Traits\Enum\EnumAttributeTrait;
 
 enum UserTypeEnum : string
 {

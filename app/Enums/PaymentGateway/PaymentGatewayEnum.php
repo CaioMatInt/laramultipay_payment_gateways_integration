@@ -2,7 +2,7 @@
 
 namespace App\Enums\PaymentGateway;
 
-use App\Traits\EnumAttributeTrait;
+use App\Traits\Enum\EnumAttributeTrait;
 
 enum PaymentGatewayEnum : string
 {

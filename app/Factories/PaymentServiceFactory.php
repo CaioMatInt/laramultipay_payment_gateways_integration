@@ -3,7 +3,7 @@
 namespace App\Factories;
 
 use App\Enums\PaymentGateway\PaymentGatewayEnum;
-use App\Exceptions\InvalidOrNonRedirectablePaymentGatewayException;
+use App\Exceptions\PaymentGateway\InvalidOrNonRedirectablePaymentGatewayException;
 use App\Services\PaymentGateway\PaymentRedirectInterface;
 use App\Services\PaymentGateway\StripeService;
 

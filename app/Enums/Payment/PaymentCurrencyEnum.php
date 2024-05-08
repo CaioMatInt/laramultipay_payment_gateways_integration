@@ -2,7 +2,7 @@
 
 namespace App\Enums\Payment;
 
-use App\Traits\EnumAttributeTrait;
+use App\Traits\Enum\EnumAttributeTrait;
 
 enum PaymentCurrencyEnum : string
 {

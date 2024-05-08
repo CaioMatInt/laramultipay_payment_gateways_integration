@@ -3,7 +3,7 @@
 namespace App\Services\Payment;
 
 use App\DTOs\Payment\PaymentCreationDto;
-use App\Exceptions\InvalidOrNonRedirectablePaymentGatewayException;
+use App\Exceptions\PaymentGateway\InvalidOrNonRedirectablePaymentGatewayException;
 use App\Factories\PaymentServiceFactory;
 use App\Models\Payment;
 use App\Services\PaymentGateway\PaymentGatewayService;
