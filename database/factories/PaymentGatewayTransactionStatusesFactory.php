@@ -15,15 +15,7 @@ class PaymentGatewayTransactionStatusesFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->randomElement([
-                    'pending',
-                    'completed',
-                    'failed',
-                    'cancelled',
-                    'refunded',
-                    'disputed'
-                ]
-            ),
+            'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
             'payment_gateway_id' => PaymentGateway::factory(),
             'payment_generic_status_id' => PaymentGenericStatus::factory(),

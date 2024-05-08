@@ -17,7 +17,7 @@ class ChargeableItemFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
-            'currency' => $this->faker->randomElement(PaymentCurrencyEnum::values()),
+            'currency' => $this->faker->currencyCode(),
             'price' => $this->faker->randomNumber(),
             'chargeable_item_category_id' => ChargeableItemCategory::factory(),
             'created_at' => Carbon::now(),

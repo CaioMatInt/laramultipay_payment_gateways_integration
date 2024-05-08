@@ -16,7 +16,7 @@ class PaymentGenericStatusFactory extends Factory
         return [
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'name' => $this->faker->unique()->randomElement(PaymentGenericStatusEnum::values()),
+            'name' => $this->faker->unique()->word(),
         ];
     }
 }
