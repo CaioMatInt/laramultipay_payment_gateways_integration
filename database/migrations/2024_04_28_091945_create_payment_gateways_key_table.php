@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('payment_gateways_keys', function (Blueprint $table) {
+        Schema::create('payment_gateway_keys', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(PaymentGateway::class);
             $table->foreignIdFor(Company::class);
-            $table->string('key');
+            $table->text('key');
+            $table->string('type')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -21,6 +22,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('payment_gateways_keys');
+        Schema::dropIfExists('payment_gateway_keys');
     }
 };

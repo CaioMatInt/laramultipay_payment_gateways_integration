@@ -17,6 +17,7 @@ class Transaction extends Model
         'response_code',
         'date',
         'payment_id',
+        'url',
     ];
 
     protected function casts(): array

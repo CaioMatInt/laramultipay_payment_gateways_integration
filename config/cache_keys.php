@@ -2,6 +2,24 @@
 
 return [
     'user_types' => [
-        'user_type_by_name' => 'user_type_',
+        'by_name' => 'user_type_name_',
+    ],
+    'payment_generic_status' => [
+        'by_id' => 'payment_generic_status_id_',
+        'initial' => 'payment_generic_status_initial',
+    ],
+    'payment_method' => [
+        'by_id' => 'payment_method_id_',
+        'by_name' => 'payment_method_name_',
+    ],
+    'payment' => [
+        'by_uuid' => 'payment_uuid_',
+    ],
+    'payment_gateway' => [
+        'by_id' => 'payment_gateway_id_',
+        'by_name' => 'payment_gateway_name_',
+    ],
+    'provider' => [
+        'by_name' => 'provider_name_',
     ],
 ];

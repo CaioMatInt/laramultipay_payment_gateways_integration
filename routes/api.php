@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\PaymentGatewayKeyController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,4 +36,11 @@ Route::prefix('payments')->middleware('auth:sanctum')->group(function () {
     Route::post('', [PaymentController::class, 'store'])->name('payment.store');
     Route::get('', [PaymentController::class, 'index'])->name('payment.index');
     Route::get('/{uuid}', [PaymentController::class, 'show'])->name('payment.show');
+});
+
+Route::get('payments/{uuid}/redirect', [PaymentController::class, 'redirectToGatewayPaymentPage'])
+    ->name('payment.redirect-to-gateway-payment-page');
+
+Route::prefix('payment-gateway-keys')->middleware('auth:sanctum')->group(function () {
+    Route::post('', [PaymentGatewayKeyController::class, 'store'])->name('payment-gateway-key.store');
 });

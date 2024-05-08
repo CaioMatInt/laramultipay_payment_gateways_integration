@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        //@@TODO: move to MongoDb
         Schema::create('transaction_logs', function (Blueprint $table) {
             $table->id();
           /*  $table->foreignIdFor(Transaction::class);
-            //@@TODO: use Enums
             $table->enum('event_type', ['status_change', 'error']);
             $table->foreignId('previous_status_id');
             $table->foreign('previous_status_id')->references('id')->on('payment_gateway_transaction_statuses');

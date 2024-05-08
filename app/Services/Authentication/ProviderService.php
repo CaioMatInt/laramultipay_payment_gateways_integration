@@ -60,7 +60,8 @@ class ProviderService
 
     public function getIdByName(string $name): int
     {
-        return Cache::rememberForever('provider_id_' . $name, function () use ($name) {
+        //@@TODO: Clear cache via Event/Listener
+        return Cache::rememberForever(config('cache_keys.provider.by_name') . $name, function () use ($name) {
             return $this->model::getIdByName($name)->firstOrFail()->id;
         });
     }

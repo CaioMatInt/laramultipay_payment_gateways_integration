@@ -19,12 +19,14 @@ class PaymentFactory extends Factory
     {
         return [
             'uuid' => $this->faker->uuid(),
-            'amount' => $this->faker->randomNumber(),
+            'name' => $this->faker->word(),
             'user_id' => User::factory(),
             'company_id' => Company::factory(),
+            'amount' => $this->faker->randomNumber(),
             'currency' => $this->faker->randomElement(PaymentCurrencyEnum::values()),
             'payment_generic_status_id' => PaymentGenericStatus::factory(),
             'payment_method_id' => PaymentMethod::factory(),
+            'expires_at' => Carbon::now()->addDays(1),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

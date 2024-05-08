@@ -13,14 +13,16 @@ class PaymentMethodService
 
     public function findCachedByName(string $name): PaymentMethod
     {
-        return Cache::rememberForever('payment_method_' . $name, function () use ($name) {
+        //@@TODO: Clear cache via Event/Listener
+        return Cache::rememberForever(config('cache_keys.payment_method.by_name') . $name, function () use ($name) {
             return $this->model->where('name', $name)->firstOrFail();
         });
     }
 
     public function findCached(int $id): PaymentMethod
     {
-        return Cache::rememberForever('payment_method_' . $id, function () use ($id) {
+        //@@TODO: Clear cache via Event/Listener
+        return Cache::rememberForever(config('cache_keys.payment_method.by_id') . $id, function () use ($id) {
             return $this->model->findOrFail($id);
         });
     }

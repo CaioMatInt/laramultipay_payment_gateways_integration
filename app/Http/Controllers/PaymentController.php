@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\Payment\PaymentCreationDto;
+use App\Exceptions\InvalidOrNonRedirectablePaymentGatewayException;
 use App\Http\Requests\Payment\PaymentIndexRequest;
 use App\Http\Requests\Payment\ShowPaymentRequest;
 use App\Http\Requests\Payment\StorePaymentRequest;
 use App\Http\Resources\Payment\PaymentResource;
 use App\Services\Payment\PaymentService;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
@@ -38,11 +42,22 @@ class PaymentController extends Controller
 
     public function store(StorePaymentRequest $request): PaymentResource
     {
-        $paymentCreationDto = PaymentCreationDto::fromRequest($request->only(['amount', 'currency', 'payment_method']));
+        $paymentCreationData = $request->only(['name', 'amount', 'currency', 'payment_method', 'payment_gateway']);
+        $paymentCreationData['expires_at'] = Carbon::parse($request->expires_at);
+        $paymentCreationDto = PaymentCreationDto::fromRequest($paymentCreationData);
+
         $payment = $this->service->create($paymentCreationDto);
 
         return new PaymentResource(
             $payment
         );
+    }
+
+    /**
+     * @throws InvalidOrNonRedirectablePaymentGatewayException
+     */
+    public function redirectToGatewayPaymentPage(): RedirectResponse
+    {
+        return $this->service->redirectToGatewayPaymentPage(request()->route('uuid'));
     }
 }

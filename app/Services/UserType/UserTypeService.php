@@ -13,7 +13,8 @@ class UserTypeService
 
     public function findCachedByName(string $name): UserType
     {
-        return Cache::rememberForever('user_type_' . $name, function () use ($name) {
+        //@@TODO: Clear cache via Event/Listener
+        return Cache::rememberForever(config('cache_keys.user_types.by_name') . $name, function () use ($name) {
             return $this->model->where('name', $name)->firstOrFail();
         });
     }

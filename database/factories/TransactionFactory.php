@@ -23,6 +23,7 @@ class TransactionFactory extends Factory
             'gateway_status' => $this->faker->word(),
             'response_code' => $this->faker->word(),
             'date' => Carbon::now(),
+            'url' => $this->faker->url(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

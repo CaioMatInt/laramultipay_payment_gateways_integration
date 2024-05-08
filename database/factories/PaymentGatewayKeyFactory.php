@@ -8,7 +8,7 @@ use App\Models\PaymentGatewayKey;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class PaymentGatewaysKeysFactory extends Factory
+class PaymentGatewayKeyFactory extends Factory
 {
     protected $model = PaymentGatewayKey::class;
 
@@ -17,7 +17,8 @@ class PaymentGatewaysKeysFactory extends Factory
         return [
             'payment_gateway_id' => PaymentGateway::factory(),
             'company_id' => Company::factory(),
-            'key' => $this->faker->uuid,
+            'key' => $this->faker->uuid(),
+            'type' => $this->faker->word(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

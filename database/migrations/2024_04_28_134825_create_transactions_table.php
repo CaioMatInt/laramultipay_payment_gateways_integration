@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('gateway_status')->nullable();
             $table->string('response_code')->nullable();
             $table->date('date');
+            $table->string('url')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

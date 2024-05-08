@@ -14,7 +14,8 @@ class PaymentGatewayKey extends Model
     protected $fillable = [
         'payment_gateway_id',
         'company_id',
-        'key'
+        'key',
+        'type',
     ];
 
     protected function gateway(): BelongsTo

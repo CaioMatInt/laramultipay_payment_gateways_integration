@@ -2,6 +2,7 @@
 
 use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Models\Company;
+use App\Models\PaymentGateway;
 use App\Models\PaymentGenericStatus;
 use App\Models\PaymentMethod;
 use App\Models\User;
@@ -14,12 +15,15 @@ return new class extends Migration {
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->uuid();
+            $table->string('name');
             $table->integer('amount');
+            $table->enum('currency', PaymentCurrencyEnum::values());
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Company::class);
-            $table->enum('currency', PaymentCurrencyEnum::values());
             $table->foreignIdFor(PaymentGenericStatus::class);
-            $table->foreignIdFor(PaymentMethod::class);
+            $table->foreignIdFor(PaymentGateway::class)->nullable();
+            $table->foreignIdFor(PaymentMethod::class)->nullable();
+            $table->dateTime('expires_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

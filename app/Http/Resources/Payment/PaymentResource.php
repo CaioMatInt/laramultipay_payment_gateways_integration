@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Payment;
 
+use App\Services\PaymentGateway\PaymentGatewayService;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class PaymentResource extends JsonResource
 
     private readonly PaymentGenericStatusService $paymentGenericStatusService;
     private readonly PaymentMethodService $paymentMethodService;
+    private readonly PaymentGatewayService $paymentGatewayService;
 
     public function __construct(
         $resource
@@ -21,6 +23,7 @@ class PaymentResource extends JsonResource
         parent::__construct($resource);
         $this->paymentGenericStatusService = app(PaymentGenericStatusService::class);
         $this->paymentMethodService = app(PaymentMethodService::class);
+        $this->paymentGatewayService = app(PaymentGatewayService::class);
     }
 
     /**
@@ -41,11 +44,20 @@ class PaymentResource extends JsonResource
             ->findCached($this->payment_method_id)
             ->name;
 
+        $paymentGatewayName = $this
+            ->paymentGatewayService
+            ->findCached($this->payment_gateway_id)
+            ->name;
+
         return [
             'uuid' => $this->uuid,
+            'name' => $this->name,
             'amount' => $this->amount,
+            'currency' => $this->currency,
             'payment_generic_status' => $paymentGenericStatusName,
             'payment_method' => $paymentMethodName,
+            'expires_at' => $this->expires_at->format('Y-m-d H:i'),
+            'payment_gateway' => $paymentGatewayName,
         ];
     }
 }
