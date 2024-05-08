@@ -26,9 +26,10 @@ describe('PaymentGenericStatusService', function () {
 
         $this->paymentGenericStatusService->findCached($paymentGenericStatus->id);
 
-        expect(Cache::has('payment_generic_status_' . $paymentGenericStatus->id))->toBeTrue();
+        expect(Cache::has(config('cache_keys.payment_generic_status.by_id') . $paymentGenericStatus->id))
+            ->toBeTrue();
 
-        $cachedPaymentGenericStatus = Cache::get('payment_generic_status_' . $paymentGenericStatus->id);
+        $cachedPaymentGenericStatus = Cache::get(config('cache_keys.payment_generic_status.by_id') . $paymentGenericStatus->id);
         expect($cachedPaymentGenericStatus->id)->toBe($paymentGenericStatus->id)
             ->and($cachedPaymentGenericStatus->name)->toBe($paymentGenericStatus->name);
     });

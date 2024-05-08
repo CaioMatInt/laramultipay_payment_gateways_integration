@@ -20,7 +20,7 @@ class PaymentMethod extends Model
         return $query->where('name', $name);
     }
 
-    protected function payments(): HasMany
+    public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'payment_method_id');
     }

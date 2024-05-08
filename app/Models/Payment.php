@@ -30,34 +30,34 @@ class Payment extends Model
         'expires_at' => 'datetime',
     ];
 
-    protected function user(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    protected function company(): BelongsTo
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
 
-    protected function genericStatus(): BelongsTo
+    public function genericStatus(): BelongsTo
     {
-        return $this->belongsTo(PaymentGenericStatus::class);
+        return $this->belongsTo(PaymentGenericStatus::class, 'payment_generic_status_id');
     }
 
-    protected function method(): BelongsTo
+    public function method(): BelongsTo
     {
-        return $this->belongsTo(PaymentMethod::class);
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 
-    protected function transactions(): HasMany
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
 
-    protected function gateway(): BelongsTo
+    public function gateway(): BelongsTo
     {
-        return $this->belongsTo(PaymentGateway::class);
+        return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id');
     }
 
     public function chargeableItems(): belongsToMany

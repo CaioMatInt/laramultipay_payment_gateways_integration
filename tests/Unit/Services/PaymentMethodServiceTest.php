@@ -23,9 +23,10 @@ describe('PaymentMethodServiceTest', function () {
     test('should cache find by name result', function () {
         $this->randomPaymentMethodService->findCachedByName($this->randomPaymentMethod->name);
 
-        expect(Cache::has('payment_method_' . $this->randomPaymentMethod->name))->toBeTrue();
+        expect(Cache::has(config('cache_keys.payment_method.by_name') . $this->randomPaymentMethod->name))->toBeTrue();
 
-        $cachedPaymentMethod = Cache::get('payment_method_' . $this->randomPaymentMethod->name);
+        $cachedPaymentMethod = Cache::get(config('cache_keys.payment_method.by_name') . $this->randomPaymentMethod->name);
+
         expect($cachedPaymentMethod->id)->toBe($this->randomPaymentMethod->id)
             ->and($cachedPaymentMethod->name)->toBe($this->randomPaymentMethod->name);
     });
@@ -40,9 +41,15 @@ describe('PaymentMethodServiceTest', function () {
     test('should cache find by id result', function () {
         $this->randomPaymentMethodService->findCached($this->randomPaymentMethod->id);
 
-        expect(Cache::has('payment_method_' . $this->randomPaymentMethod->id))->toBeTrue();
+        expect(Cache::has(config('cache_keys.payment_method.by_id')
+            . $this->randomPaymentMethod->id
+        ))->toBeTrue();
 
-        $cachedPaymentMethod = Cache::get('payment_method_' . $this->randomPaymentMethod->id);
+        $cachedPaymentMethod = Cache::get(
+            config('cache_keys.payment_method.by_id')
+            . $this->randomPaymentMethod->id
+        );
+
         expect($cachedPaymentMethod->id)->toBe($this->randomPaymentMethod->id)
             ->and($cachedPaymentMethod->name)->toBe($this->randomPaymentMethod->name);
     });

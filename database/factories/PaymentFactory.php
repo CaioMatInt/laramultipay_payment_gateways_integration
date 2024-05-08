@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Models\Company;
 use App\Models\Payment;
+use App\Models\PaymentGateway;
 use App\Models\PaymentGenericStatus;
 use App\Models\PaymentMethod;
 use App\Models\User;
@@ -26,6 +27,7 @@ class PaymentFactory extends Factory
             'currency' => $this->faker->randomElement(PaymentCurrencyEnum::values()),
             'payment_generic_status_id' => PaymentGenericStatus::factory(),
             'payment_method_id' => PaymentMethod::factory(),
+            'payment_gateway_id' => PaymentGateway::factory(),
             'expires_at' => Carbon::now()->addDays(1),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

@@ -2,10 +2,13 @@
 
 use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Enums\Payment\PaymentGenericStatusEnum;
+use App\Enums\PaymentGateway\PaymentGatewayEnum;
 use App\Enums\PaymentMethod\PaymentMethodEnum;
 use App\Models\Payment;
+use App\Models\PaymentGateway;
 use App\Models\PaymentGenericStatus;
 use App\Models\PaymentMethod;
+use Carbon\Carbon;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 uses(\Tests\Traits\UserTrait::class);
@@ -26,23 +29,31 @@ describe('payments.index', function () {
         );
         $paymentMethod = PaymentMethod::factory()->create(['name' => PaymentMethodEnum::CREDIT_CARD->value]);
 
+        $paymentGateway = PaymentGateway::factory()->create();
+
         $payments = Payment::factory(5)->create([
             'company_id' => $this->userCompanyAdmin->company_id,
             'currency' => PaymentCurrencyEnum::USD->value,
             'payment_generic_status_id' => $paymentGenericStatus->id,
             'payment_method_id' => $paymentMethod->id,
+            'payment_gateway_id' => $paymentGateway->id
         ]);
 
         $response = $this->getJson(route('payment.index'));
         $response->assertOk();
 
         $response->assertJsonCount(5, 'data');
+
         foreach ($payments as $payment) {
             $response->assertJsonFragment([
                 'uuid' => $payment->uuid,
+                'name' => $payment->name,
                 'amount' => $payment->amount,
+                'currency' => $payment->currency,
                 'payment_generic_status' => PaymentGenericStatusEnum::PENDING->value,
                 'payment_method' => PaymentMethodEnum::CREDIT_CARD->value,
+                'expires_at' => $payment->expires_at->format('Y-m-d H:i'),
+                'payment_gateway' => $paymentGateway->name,
             ]);
         }
     });
@@ -136,21 +147,36 @@ describe('payments.store', function () {
         PaymentGenericStatus::factory()->create(['name' => PaymentGenericStatusEnum::PENDING->value]);
         PaymentMethod::factory()->create(['name' => PaymentMethodEnum::CREDIT_CARD->value]);
 
+        $stripePaymentGateway = PaymentGateway::factory()->create(['name' => PaymentGatewayEnum::STRIPE->value]);
+
         $paymentPayload = $this->getCreatePaymentPayload(
             [
                 'user_id' => $this->userCompanyAdmin->id,
                 'currency' => PaymentCurrencyEnum::USD->value,
-                'payment_method' => PaymentMethodEnum::CREDIT_CARD->value
+                'payment_method' => PaymentMethodEnum::CREDIT_CARD->value,
+                'payment_gateway' => $stripePaymentGateway->name,
             ]
         );
 
         $response = $this->postJson(route('payment.store'), $paymentPayload);
         $response->assertCreated();
 
+        $expiresAt = Carbon::createFromFormat(
+            'Y-m-d\TH:i',
+            $paymentPayload['expires_at'])->format('Y-m-d H:i'
+        );
+
+        $payment = Payment::first();
+
         $response->assertJsonFragment([
+            'uuid' => $payment->uuid,
+            'name' => $paymentPayload['name'],
             'amount' => $paymentPayload['amount'],
+            'currency' => $paymentPayload['currency'],
             'payment_generic_status' => PaymentGenericStatusEnum::PENDING->value,
             'payment_method' => PaymentMethodEnum::CREDIT_CARD->value,
+            'expires_at' => $expiresAt,
+            'payment_gateway' => $stripePaymentGateway->name,
         ]);
     });
 

@@ -21,9 +21,9 @@ class PaymentCreationDto
      *     name: string,
      *     amount: integer,
      *     currency: string,
-     *     paymentMethod: string,
-     *     expiresAt: ?Carbon,
-     *     paymentGateway: string
+     *     payment_method: string,
+     *     expires_at: ?Carbon,
+     *     payment_gateway: string
      * } $data
      */
     public function __construct(array $data)

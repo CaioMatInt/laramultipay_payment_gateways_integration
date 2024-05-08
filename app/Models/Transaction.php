@@ -27,17 +27,17 @@ class Transaction extends Model
         ];
     }
 
-    protected function payment(): BelongsTo
+    public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
     }
 
-    protected function gatewayTransactionStatus(): BelongsTo
+    public function gatewayTransactionStatus(): BelongsTo
     {
         return $this->belongsTo(PaymentGatewayTransactionStatus::class);
     }
 
-    protected function company(): BelongsTo
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }

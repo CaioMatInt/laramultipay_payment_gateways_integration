@@ -26,7 +26,7 @@ class PaymentGenericStatus extends Model
         return $this->hasMany(Payment::class);
     }
 
-    protected function gatewayTransactionStatuses(): HasMany
+    public function gatewayTransactionStatuses(): HasMany
     {
         return $this->hasMany(PaymentGatewayTransactionStatus::class);
     }

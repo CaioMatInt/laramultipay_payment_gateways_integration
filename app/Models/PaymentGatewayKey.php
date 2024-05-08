@@ -18,12 +18,12 @@ class PaymentGatewayKey extends Model
         'type',
     ];
 
-    protected function gateway(): BelongsTo
+    public function gateway(): BelongsTo
     {
         return $this->belongsTo(PaymentGateway::class);
     }
 
-    protected function company(): BelongsTo
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }

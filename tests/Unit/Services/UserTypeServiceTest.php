@@ -26,9 +26,9 @@ describe('UserTypeServiceTest', function () {
 
         $this->userTypeService->findCachedByName($userTypeFactory->name);
 
-        expect(Cache::has('user_type_' . $userTypeFactory->name))->toBeTrue();
+        expect(Cache::has(config('cache_keys.user_types.by_name') . $userTypeFactory->name))->toBeTrue();
 
-        $cachedUserType = Cache::get('user_type_' . $userTypeFactory->name);
+        $cachedUserType = Cache::get(config('cache_keys.user_types.by_name') . $userTypeFactory->name);
         expect($cachedUserType->id)->toBe($userTypeFactory->id)
             ->and($cachedUserType->name)->toBe($userTypeFactory->name);
     });

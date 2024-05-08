@@ -16,17 +16,17 @@ class PaymentGatewayTransactionStatus extends Model
         'name',
     ];
 
-    protected function transactions(): HasMany
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
 
-    protected function gateway(): BelongsTo
+    public function gateway(): BelongsTo
     {
         return $this->belongsTo(PaymentGateway::class);
     }
 
-    protected function genericStatus(): BelongsTo
+    public function genericStatus(): BelongsTo
     {
         return $this->belongsTo(PaymentGenericStatus::class);
     }

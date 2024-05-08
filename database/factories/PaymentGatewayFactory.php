@@ -16,7 +16,7 @@ class PaymentGatewayFactory extends Factory
         return [
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'name' => $this->faker->randomElement(PaymentGatewayEnum::values()),
+            'name' => $this->faker->unique()->word(),
         ];
     }
 }

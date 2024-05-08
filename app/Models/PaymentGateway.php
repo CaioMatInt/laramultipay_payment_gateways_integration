@@ -15,7 +15,7 @@ class PaymentGateway extends Model
         'name',
     ];
 
-    protected function transactionStatuses(): HasMany
+    public function transactionStatuses(): HasMany
     {
         return $this->hasMany(PaymentGatewayTransactionStatus::class);
     }
