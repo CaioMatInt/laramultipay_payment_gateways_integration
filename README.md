@@ -22,6 +22,6 @@ TBE
 TBE
 
 ## Tests 
-<img src="https://pestphp.com/www/assets/logo.svg" width="92.5" height="28">
+<img src="https://github.com/CaioMatInt/payment_gateways_integration/assets/40992883/9be42c02-f192-4daf-809a-90a35aca2b77" width="130" height="70">
 
 The tests are being developed with the [PEST framework](https://pestphp.com/) for Laravel. You can run them by executing "php artisan test" in the root folder. The tests can be found in the "app/tests" directory.
