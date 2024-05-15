@@ -24,4 +24,4 @@ TBE
 ## Tests 
 <img src="https://pestphp.com/www/assets/logo.svg" width="92.5" height="28">
 
-The tests are being carried out with the [PEST framework](https://pestphp.com/) for Laravel. You can run them by executing "php artisan test" in the root folder. The tests can be found in the "app/tests" directory.
+The tests are being developed with the [PEST framework](https://pestphp.com/) for Laravel. You can run them by executing "php artisan test" in the root folder. The tests can be found in the "app/tests" directory.
