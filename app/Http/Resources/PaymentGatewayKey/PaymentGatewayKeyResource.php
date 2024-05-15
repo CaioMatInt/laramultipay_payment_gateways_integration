@@ -2,34 +2,33 @@
 
 namespace App\Http\Resources\PaymentGatewayKey;
 
-use App\Services\PaymentGateway\PaymentGatewayService;
+use App\Services\PaymentGatewayKey\PaymentGatewayKeyService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Crypt;
 
 class PaymentGatewayKeyResource extends JsonResource
 {
 
-    private readonly PaymentGatewayService $paymentGatewayService;
+    private readonly PaymentGatewayKeyService $paymentGatewayKeyService;
 
     public function __construct(
         $resource
     )
     {
         parent::__construct($resource);
-        $this->paymentGatewayService = app(PaymentGatewayService::class);
+        $this->paymentGatewayKeyService = app(PaymentGatewayKeyService::class);
     }
 
     public function toArray(Request $request): array
     {
         $paymentGatewayName = $this
-            ->paymentGatewayService
+            ->paymentGatewayKeyService
             ->findCached($this->payment_gateway_id)
             ->name;
 
         return [
             'id' => $this->id,
-            'key' => $this->paymentGatewayService->getMaskedKey($this->key),
+            'key' => $this->paymentGatewayKeyService->getMaskedKey($this->key),
             'type' => $this->type,
             'payment_gateway' => $paymentGatewayName,
             'created_at' => $this->created_at,
