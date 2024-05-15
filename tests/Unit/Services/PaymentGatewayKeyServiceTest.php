@@ -88,4 +88,48 @@ describe('PaymentGatewayKeyServiceTest', function () {
             null
         );
     });
+
+    test('can get all payment gateway keys', function () {
+        $paymentGatewayKeys = PaymentGatewayKey::factory()->count(3)->create();
+
+        $foundPaymentGatewayKeys = $this->paymentGatewayKeyService->getAll();
+
+        expect($foundPaymentGatewayKeys->count())->toBe($paymentGatewayKeys->count());
+    });
+
+    test('can get all payment gateway keys, without the deleted ones', function () {
+        $paymentGatewayKeys = PaymentGatewayKey::factory()->count(3)->create();
+        $paymentGatewayKeys->first()->delete();
+
+        $foundPaymentGatewayKeys = $this->paymentGatewayKeyService->getAll();
+
+        expect($foundPaymentGatewayKeys->count())->toBe($paymentGatewayKeys->count() - 1);
+    });
+
+    test('should get masked key showing only the first and last characters', function () {
+        $key = '1234567890';
+        $encryptedKey = Crypt::encrypt($key);
+
+        $maskedKey = $this->paymentGatewayKeyService->getMaskedKey($encryptedKey);
+
+        expect($maskedKey)->toBe('1********0');
+    });
+
+    test('should get masked key with custom mask character', function () {
+        $key = '1234567890';
+        $encryptedKey = Crypt::encrypt($key);
+
+        $maskedKey = $this->paymentGatewayKeyService->getMaskedKey($encryptedKey, 'x');
+
+        expect($maskedKey)->toBe('1xxxxxxxx0');
+    });
+
+    test('should get a fully masked key when the key length is less than or equal to the threshold of 5', function () {
+        $key = '1234';
+        $encryptedKey = Crypt::encrypt($key);
+
+        $maskedKey = $this->paymentGatewayKeyService->getMaskedKey($encryptedKey);
+
+        expect($maskedKey)->toBe('****');
+    });
 });

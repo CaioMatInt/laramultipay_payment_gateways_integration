@@ -43,4 +43,5 @@ Route::get('payments/{uuid}/redirect', [PaymentController::class, 'redirectToGat
 
 Route::prefix('payment-gateway-keys')->middleware('auth:sanctum')->group(function () {
     Route::post('', [PaymentGatewayKeyController::class, 'store'])->name('payment-gateway-key.store');
+    Route::get('', [PaymentGatewayKeyController::class, 'index'])->name('payment-gateway-key.index');
 });
