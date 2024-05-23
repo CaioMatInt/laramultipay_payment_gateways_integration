@@ -2,28 +2,26 @@
 
 namespace App\Services\PaymentMethod;
 
+use App\Contracts\ModelAware;
 use App\Models\PaymentMethod;
-use Illuminate\Support\Facades\Cache;
+use App\Traits\Database\CacheableFinderByNameTrait;
+use App\Traits\Database\CacheableFinderTrait;
 
-class PaymentMethodService
+class PaymentMethodService implements ModelAware
 {
+    use CacheableFinderTrait, CacheableFinderByNameTrait;
+
     public function __construct(
         private readonly PaymentMethod $model,
     ) { }
 
-    public function findCachedByName(string $name): PaymentMethod
+    protected function getFindCacheKey(int $id): string
     {
-        //@@TODO: Clear cache via Event/Listener
-        return Cache::rememberForever(config('cache_keys.payment_method.by_name') . $name, function () use ($name) {
-            return $this->model->where('name', $name)->firstOrFail();
-        });
+        return config('cache_keys.payment_method.by_id') . $id;
     }
 
-    public function findCached(int $id): PaymentMethod
+    public function getFindByNameCacheKey(string $name): string
     {
-        //@@TODO: Clear cache via Event/Listener
-        return Cache::rememberForever(config('cache_keys.payment_method.by_id') . $id, function () use ($id) {
-            return $this->model->findOrFail($id);
-        });
+        return config('cache_keys.payment_method.by_name') . $name;
     }
 }

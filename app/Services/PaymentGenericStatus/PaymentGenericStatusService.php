@@ -2,12 +2,17 @@
 
 namespace App\Services\PaymentGenericStatus;
 
+use App\Contracts\ModelAware;
 use App\Enums\Payment\PaymentGenericStatusEnum;
 use App\Models\PaymentGenericStatus;
+use App\Traits\Database\CacheableFinderTrait;
 use Illuminate\Support\Facades\Cache;
 
-class PaymentGenericStatusService
+class PaymentGenericStatusService implements ModelAware
 {
+
+    use CacheableFinderTrait;
+
     public function __construct(
         private readonly PaymentGenericStatus $model
     ) { }
@@ -20,10 +25,8 @@ class PaymentGenericStatusService
         });
     }
 
-    public function findCached(int $id): PaymentGenericStatus
+    protected function getFindCacheKey(int $id): string
     {
-        return Cache::rememberForever(config('cache_keys.payment_generic_status.by_id') . $id, function () use ($id) {
-            return $this->model->findOrFail($id);
-        });
+        return config('cache_keys.payment_generic_status.by_id') . $id;
     }
 }

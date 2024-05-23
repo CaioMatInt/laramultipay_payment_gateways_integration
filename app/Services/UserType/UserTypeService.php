@@ -2,20 +2,20 @@
 
 namespace App\Services\UserType;
 
+use App\Contracts\ModelAware;
 use App\Models\UserType;
-use Illuminate\Support\Facades\Cache;
+use App\Traits\Database\CacheableFinderByNameTrait;
 
-class UserTypeService
+class UserTypeService implements ModelAware
 {
+    use CacheableFinderByNameTrait;
+
     public function __construct(
         private readonly UserType $model,
     ) { }
 
-    public function findCachedByName(string $name): UserType
+    protected function getFindByNameCacheKey(string $name): string
     {
-        //@@TODO: Clear cache via Event/Listener
-        return Cache::rememberForever(config('cache_keys.user_types.by_name') . $name, function () use ($name) {
-            return $this->model->where('name', $name)->firstOrFail();
-        });
+        return config('cache_keys.user_types.by_name') . $name;
     }
 }
