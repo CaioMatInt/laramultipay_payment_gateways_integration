@@ -19,7 +19,7 @@ TBE
 ![image description](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)![image description](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 
 ## Postman Collection
-TBE
+The Postman collection can be found in the root folder, payment_gateways.postman_collection.
 
 ## Tests 
 <img src="https://github.com/CaioMatInt/payment_gateways_integration/assets/40992883/9be42c02-f192-4daf-809a-90a35aca2b77" width="130" height="70">
