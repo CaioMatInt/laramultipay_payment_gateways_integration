@@ -6,5 +6,5 @@ use Illuminate\Http\RedirectResponse;
 
 interface PaymentRedirectInterface
 {
-    public function redirectToPaymentPage(Payment $payment): RedirectResponse;
+    function redirectToPaymentPage(Payment $payment): RedirectResponse;
 }

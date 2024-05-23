@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\ModelAware;
 use App\Enums\Payment\PaymentGenericStatusEnum;
 use App\Models\PaymentGenericStatus;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
@@ -57,5 +58,9 @@ describe('PaymentGenericStatusService', function () {
 
         $cachedInitialStatus = Cache::get(config('cache_keys.payment_generic_status.initial'));
         expect($cachedInitialStatus->name)->toBe(PaymentGenericStatusEnum::PENDING->value);
+    });
+
+    test('ensure that PaymentGenericStatusService implements ModelAware', function () {
+        expect($this->paymentGenericStatusService)->toBeInstanceOf(ModelAware::class);
     });
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\ModelAware;
 use App\Models\UserType;
 use App\Services\UserType\UserTypeService;
 use Illuminate\Support\Facades\Cache;
@@ -31,5 +32,9 @@ describe('UserTypeServiceTest', function () {
         $cachedUserType = Cache::get(config('cache_keys.user_types.by_name') . $userTypeFactory->name);
         expect($cachedUserType->id)->toBe($userTypeFactory->id)
             ->and($cachedUserType->name)->toBe($userTypeFactory->name);
+    });
+
+    test('ensure that UserTypeService implements ModelAware', function () {
+        expect($this->userTypeService)->toBeInstanceOf(ModelAware::class);
     });
 });

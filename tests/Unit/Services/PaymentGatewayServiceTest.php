@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\ModelAware;
 use App\Models\PaymentGateway;
 use App\Services\PaymentGateway\PaymentGatewayService;
 use Illuminate\Support\Facades\Cache;
@@ -52,5 +53,9 @@ describe('PaymentGatewayServiceTest', function () {
         $cachedPaymentGateway = Cache::get(config('cache_keys.payment_gateway.by_name') . $paymentGateway->name);
         expect($cachedPaymentGateway->id)->toBe($paymentGateway->id)
             ->and($cachedPaymentGateway->name)->toBe($paymentGateway->name);
+    });
+
+    test('ensure that PaymentGatewayService implements ModelAware', function () {
+        expect($this->paymentGatewayService)->toBeInstanceOf(ModelAware::class);
     });
 });

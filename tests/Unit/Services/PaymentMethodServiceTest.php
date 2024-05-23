@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\ModelAware;
 use App\Models\PaymentMethod;
 use App\Services\PaymentMethod\PaymentMethodService;
 use Illuminate\Support\Facades\Cache;
@@ -52,5 +53,9 @@ describe('PaymentMethodServiceTest', function () {
 
         expect($cachedPaymentMethod->id)->toBe($this->randomPaymentMethod->id)
             ->and($cachedPaymentMethod->name)->toBe($this->randomPaymentMethod->name);
+    });
+
+    test('ensure that PaymentMethodService implements ModelAware', function () {
+        expect($this->randomPaymentMethodService)->toBeInstanceOf(ModelAware::class);
     });
 });
