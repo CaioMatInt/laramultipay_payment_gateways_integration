@@ -3,7 +3,6 @@
 namespace App\DTOs\PaymentGatewayKey;
 
 use App\Traits\Dto\RequestDataBinderTrait;
-use Carbon\Carbon;
 
 class PaymentGatewayKeyCreationDto
 {

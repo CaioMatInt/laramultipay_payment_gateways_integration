@@ -23,6 +23,10 @@ class StripeService implements PaymentGatewayServiceInterface, PaymentRedirectIn
         private readonly PaymentGatewayService $paymentGatewayService
     ) { }
 
+    /**
+     * @param Payment $payment
+     * @return RedirectResponse
+     */
     public function redirectToPaymentPage(Payment $payment): RedirectResponse
     {
         $paymentGateway = $this->paymentGatewayService->findCachedByName(PaymentGatewayEnum::STRIPE->value);
@@ -35,8 +39,18 @@ class StripeService implements PaymentGatewayServiceInterface, PaymentRedirectIn
 
         Stripe::setApiKey(Crypt::decrypt($secretKey->key));
 
-        $session = Session::create([
-            //@@TODO: Change accordingly to the defined payment method, if set
+        $session = Session::create($this->getSessionBody($payment));
+
+        return redirect()->away($session->url);
+    }
+
+    /**
+     * @param Payment $payment
+     * @return array
+     */
+    private function getSessionBody(Payment $payment): array
+    {
+        return [
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
@@ -46,14 +60,12 @@ class StripeService implements PaymentGatewayServiceInterface, PaymentRedirectIn
                     ],
                     'unit_amount' => $payment->amount,
                 ],
-                //@@TODO: Check if I'm gonna be implementing this
+                //@@TODO: Implement this
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
             'success_url' => url(self::SUCCESS_URL),
             'expires_at' => $payment->expires_at->getTimestamp(),
-        ]);
-
-        return redirect()->away($session->url);
+        ];
     }
 }

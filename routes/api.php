@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentGatewayKeyController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;

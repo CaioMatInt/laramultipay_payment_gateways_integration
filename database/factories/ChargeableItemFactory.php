@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Models\ChargeableItem;
 use App\Models\ChargeableItemCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;

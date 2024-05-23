@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\Payment\PaymentGenericStatusEnum;
 use App\Models\PaymentGenericStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;

@@ -2,10 +2,6 @@
 
 namespace App\Http\Requests\PaymentGatewayKey;
 
-use App\Enums\Payment\PaymentCurrencyEnum;
-use App\Enums\PaymentGateway\PaymentGatewayEnum;
-use App\Enums\PaymentMethod\PaymentMethodEnum;
-use App\Models\PaymentGateway;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePaymentGatewayKeyRequest extends FormRequest

@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Models\ChargeableItemCategory;
 use App\Models\Payment;
 use Illuminate\Database\Migrations\Migration;
