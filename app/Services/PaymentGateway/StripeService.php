@@ -2,6 +2,8 @@
 
 namespace App\Services\PaymentGateway;
 
+use App\Contracts\PaymentGateway\PaymentGatewayServiceInterface;
+use App\Contracts\PaymentGateway\PaymentRedirectInterface;
 use App\Enums\PaymentGateway\PaymentGatewayEnum;
 use App\Enums\PaymentGatewayKey\PaymentGatewayKeyTypes;
 use App\Models\Payment;

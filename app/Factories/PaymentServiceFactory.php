@@ -2,9 +2,9 @@
 
 namespace App\Factories;
 
+use App\Contracts\PaymentGateway\PaymentRedirectInterface;
 use App\Enums\PaymentGateway\PaymentGatewayEnum;
 use App\Exceptions\PaymentGateway\InvalidOrNonRedirectablePaymentGatewayException;
-use App\Services\PaymentGateway\PaymentRedirectInterface;
 use App\Services\PaymentGateway\StripeService;
 
 class PaymentServiceFactory
