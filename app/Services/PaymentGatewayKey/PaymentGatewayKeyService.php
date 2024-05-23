@@ -43,7 +43,7 @@ class PaymentGatewayKeyService
     {
         return $this->model->all();
     }
-    
+
     public function getMaskedKey(string $encryptedKey, string $maskChar = '*'): string
     {
         $decryptedKey = Crypt::decrypt($encryptedKey);
