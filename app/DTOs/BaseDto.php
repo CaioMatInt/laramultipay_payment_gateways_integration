@@ -5,9 +5,13 @@ namespace App\DTOs;
 abstract class BaseDto
 {
     /**
-     * BaseDto constructor.
+     * Creates an instance of the called class from the provided request data.
+     *
+     * This method uses reflection to dynamically instantiate the subclass (Dto)
+     * that called this method, passing the given data to the constructor.
      *
      * @param array $data
+     * @throws \ReflectionException
      */
     public static function fromRequest(array $data): self
     {
