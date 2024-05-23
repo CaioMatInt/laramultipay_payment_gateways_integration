@@ -11,20 +11,19 @@ use App\Http\Resources\Payment\PaymentResource;
 use App\Services\Payment\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PaymentController extends Controller
 {
-    CONST INDEX_DEFAULT_PER_PAGE = 15;
-
     public function __construct(private readonly PaymentService $service)
     {
     }
 
-    public function index(PaymentIndexRequest $request)
+    public function index(PaymentIndexRequest $request): ResourceCollection
     {
         $payments = $this->service->getPaginatedByCompanyId(
             auth()->user()->company_id,
-            $request->perPage ?? self::INDEX_DEFAULT_PER_PAGE
+            $request->perPage ?? config('database.pagination.default_records_per_page')
         );
 
         return PaymentResource::collection($payments);

@@ -2,6 +2,7 @@
 
 namespace App\Services\Payment;
 
+use App\Contracts\ModelAware;
 use App\DTOs\Payment\PaymentCreationDto;
 use App\Exceptions\PaymentGateway\InvalidOrNonRedirectablePaymentGatewayException;
 use App\Factories\PaymentServiceFactory;
@@ -9,25 +10,21 @@ use App\Models\Payment;
 use App\Services\PaymentGateway\PaymentGatewayService;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
+use App\Traits\Database\Company\CompanyPaginatorTrait;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-class PaymentService
+class PaymentService implements ModelAware
 {
+    use CompanyPaginatorTrait;
+
     public function __construct(
         private readonly Payment $model,
         private readonly PaymentGenericStatusService $paymentGenericStatusService,
         private readonly PaymentMethodService $paymentMethodService,
         private readonly PaymentGatewayService $paymentGatewayService
     ) { }
-
-    public function getPaginatedByCompanyId(int $companyId, int $perPage = 15): LengthAwarePaginator
-    {
-        //@@TODO: Add caching
-        return $this->model->where('company_id', $companyId)->paginate($perPage);
-    }
 
     public function create(PaymentCreationDto $dto): Payment
     {

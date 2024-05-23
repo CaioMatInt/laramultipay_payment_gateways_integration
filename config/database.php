@@ -167,4 +167,7 @@ return [
 
     ],
 
+    'pagination' => [
+        'default_records_per_page' => 15,
+    ],
 ];

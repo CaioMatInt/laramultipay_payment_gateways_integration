@@ -2,12 +2,10 @@
 
 namespace App\DTOs\User;
 
-use App\Traits\Dto\RequestDataBinderTrait;
+use App\DTOs\BaseDto;
 
-class UserCreationDto
+class UserCreationDto extends BaseDto
 {
-    use RequestDataBinderTrait;
-
     public string $name;
     public string $email;
     public string $password;

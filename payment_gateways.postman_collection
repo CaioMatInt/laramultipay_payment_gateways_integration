@@ -693,23 +693,7 @@
 						],
 						"body": {
 							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "key",
-									"value": "sk_test_51LVMDMC23FgWY64xvO1i7dhsYdlp9e0kPkvQHqRQccNfm4eTU0mym9YmRvXAo7WcyYlv2M8HUGCEDY9G0RhR0Y2z005LiRfV7x",
-									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "secret_key",
-									"type": "text"
-								},
-								{
-									"key": "payment_gateway_id",
-									"value": "1",
-									"type": "text"
-								}
-							]
+							"formdata": []
 						},
 						"url": {
 							"raw": "{{ip}}/api/payment-gateway-keys",

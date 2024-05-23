@@ -2,12 +2,10 @@
 
 namespace App\DTOs\PaymentGatewayKey;
 
-use App\Traits\Dto\RequestDataBinderTrait;
+use App\DTOs\BaseDto;
 
-class PaymentGatewayKeyCreationDto
+class PaymentGatewayKeyCreationDto extends BaseDto
 {
-    use RequestDataBinderTrait;
-
     public string $key;
     public ?string $type;
     public string $paymentGatewayId;

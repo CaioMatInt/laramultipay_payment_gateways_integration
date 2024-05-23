@@ -22,4 +22,7 @@ return [
     'provider' => [
         'by_name' => 'provider_name_',
     ],
+    'chargeable_item_categories' => [
+        'by_id' => 'chargeable_item_category_id_',
+    ],
 ];

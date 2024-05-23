@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ChargeableItemCategoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentGatewayKeyController;
 use App\Http\Controllers\TransactionController;
@@ -44,4 +45,12 @@ Route::get('payments/{uuid}/redirect', [PaymentController::class, 'redirectToGat
 Route::prefix('payment-gateway-keys')->middleware('auth:sanctum')->group(function () {
     Route::post('', [PaymentGatewayKeyController::class, 'store'])->name('payment-gateway-key.store');
     Route::get('', [PaymentGatewayKeyController::class, 'index'])->name('payment-gateway-key.index');
+});
+
+Route::prefix('chargeable-item-categories')->middleware('auth:sanctum')->group(function () {
+    Route::get('', [ChargeableItemCategoryController::class, 'index'])->name('chargeable-item-category.index');
+    Route::get('/{id}', [ChargeableItemCategoryController::class, 'show'])->name('chargeable-item-category.show');
+    Route::post('', [ChargeableItemCategoryController::class, 'store'])->name('chargeable-item-category.store');
+    Route::patch('/{id}', [ChargeableItemCategoryController::class, 'update'])->name('chargeable-item-category.update');
+    Route::delete('/{id}', [ChargeableItemCategoryController::class, 'destroy'])->name('chargeable-item-category.destroy');
 });

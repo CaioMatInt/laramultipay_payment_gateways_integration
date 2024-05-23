@@ -12,5 +12,6 @@ class ChargeableItemCategory extends Model
 
     protected $fillable = [
         'name',
+        'company_id',
     ];
 }
