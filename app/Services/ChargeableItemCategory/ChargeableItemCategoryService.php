@@ -2,17 +2,18 @@
 
 namespace App\Services\ChargeableItemCategory;
 
+use App\Contracts\ChargeableItemCategory\ChargeableItemCategoryUpdatableInterface;
 use App\Contracts\ModelAware;
 use App\DTOs\ChargeableItemCategory\ChargeableItemCategoryDto;
 use App\Models\ChargeableItemCategory;
 use App\Traits\Database\CacheableFinderTrait;
 use App\Traits\Database\DestroyableTrait;
 use App\Traits\Database\PaginatorByCompanyTrait;
-use App\Traits\Database\UpdatableTrait;
+use App\Traits\Database\DtoUpdatableTrait;
 
-class ChargeableItemCategoryService implements ModelAware
+class ChargeableItemCategoryService implements ModelAware, ChargeableItemCategoryUpdatableInterface
 {
-    use CacheableFinderTrait, PaginatorByCompanyTrait, DestroyableTrait, UpdatableTrait;
+    use CacheableFinderTrait, PaginatorByCompanyTrait, DestroyableTrait, DtoUpdatableTrait;
 
     public function __construct(
         private readonly ChargeableItemCategory $model,

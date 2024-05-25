@@ -3,7 +3,7 @@
 namespace App\Services\PaymentGateway;
 
 use App\Contracts\PaymentGateway\PaymentGatewayServiceInterface;
-use App\Contracts\PaymentGateway\PaymentRedirectInterface;
+use App\Contracts\PaymentGateway\PaymentRedirectableInterface;
 use App\Enums\PaymentGateway\PaymentGatewayEnum;
 use App\Enums\PaymentGatewayKey\PaymentGatewayKeyTypes;
 use App\Models\Payment;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Crypt;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 
-class StripeService implements PaymentGatewayServiceInterface, PaymentRedirectInterface
+class StripeService implements PaymentGatewayServiceInterface, PaymentRedirectableInterface
 {
     CONST STRIPE_KEY_TYPE = PaymentGatewayKeyTypes::SECRET_KEY->value;
     CONST SUCCESS_URL = '/api/transactions/success?session_id={CHECKOUT_SESSION_ID}';

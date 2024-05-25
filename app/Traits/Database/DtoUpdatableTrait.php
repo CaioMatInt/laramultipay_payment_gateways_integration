@@ -6,7 +6,7 @@ use App\DTOs\BaseDto;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-trait UpdatableTrait
+trait DtoUpdatableTrait
 {
     use ModelAccessorTrait;
 
