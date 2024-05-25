@@ -18,6 +18,7 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class AuthenticationController extends Controller
 {
@@ -63,7 +64,7 @@ class AuthenticationController extends Controller
         $this->userService->create($userCreationData);
         $this->companyService->create($request->only('company_name'));
 
-        return response('', Response::HTTP_CREATED);
+        return response('', SymfonyResponse::HTTP_CREATED);
     }
 
     public function getAuthenticatedUser(): Response
