@@ -12,8 +12,8 @@ use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\SendPasswordResetLinkEmailRequest;
 use App\Http\Resources\User\UserLoginResource;
 use App\Http\Resources\User\UserResource;
-use App\Models\Company;
 use App\Services\Authentication\ProviderService;
+use App\Services\Company\CompanyService;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +23,8 @@ class AuthenticationController extends Controller
 {
     public function __construct(
         private readonly UserService $userService,
-        private readonly ProviderService $providerService
+        private readonly ProviderService $providerService,
+        private readonly CompanyService $companyService,
     ) { }
 
     public function login(LoginRequest $request): Response
@@ -60,9 +61,7 @@ class AuthenticationController extends Controller
     {
         $userCreationData = new UserCreationDto($request->only('name', 'email', 'password'));
         $this->userService->create($userCreationData);
-        Company::create([
-            'name' => $request->company_name
-        ]);
+        $this->companyService->create($request->only('company_name'));
 
         return response('', Response::HTTP_CREATED);
     }
