@@ -13,6 +13,10 @@ describe('UserTypeServiceTest', function () {
         $this->userTypeService = app(UserTypeService::class);
     });
 
+    test('ensure that UserTypeService implements ModelAware', function () {
+        expect($this->userTypeService)->toBeInstanceOf(ModelAware::class);
+    });
+
     test('can find by name', function () {
         $userTypeFactory = UserType::factory()->create();
 
@@ -32,9 +36,5 @@ describe('UserTypeServiceTest', function () {
         $cachedUserType = Cache::get(config('cache_keys.user_types.by_name') . $userTypeFactory->name);
         expect($cachedUserType->id)->toBe($userTypeFactory->id)
             ->and($cachedUserType->name)->toBe($userTypeFactory->name);
-    });
-
-    test('ensure that UserTypeService implements ModelAware', function () {
-        expect($this->userTypeService)->toBeInstanceOf(ModelAware::class);
     });
 });

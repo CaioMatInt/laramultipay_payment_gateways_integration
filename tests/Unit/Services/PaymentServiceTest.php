@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\ModelAware;
 use App\Models\Company;
 use App\Models\Payment;
 use App\Services\Payment\PaymentService;
@@ -11,6 +12,10 @@ describe('PaymentServiceTest', function () {
 
     beforeEach(function () {
         $this->paymentService = app(PaymentService::class);
+    });
+
+    test('should implement ModelAware interface', function () {
+        expect($this->paymentService)->toBeInstanceOf(ModelAware::class);
     });
 
     test('should return a LengthAwarePaginator when getting all payments of a company', function () {

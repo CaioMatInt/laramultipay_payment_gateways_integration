@@ -14,6 +14,10 @@ describe('PaymentMethodServiceTest', function () {
         $this->randomPaymentMethod = PaymentMethod::factory()->create();
     });
 
+    test('ensure that PaymentMethodService implements ModelAware', function () {
+        expect($this->randomPaymentMethodService)->toBeInstanceOf(ModelAware::class);
+    });
+
     test('can find by name', function () {
        $paymentMethod = $this->randomPaymentMethodService->findCachedByName($this->randomPaymentMethod->name);
 
@@ -53,9 +57,5 @@ describe('PaymentMethodServiceTest', function () {
 
         expect($cachedPaymentMethod->id)->toBe($this->randomPaymentMethod->id)
             ->and($cachedPaymentMethod->name)->toBe($this->randomPaymentMethod->name);
-    });
-
-    test('ensure that PaymentMethodService implements ModelAware', function () {
-        expect($this->randomPaymentMethodService)->toBeInstanceOf(ModelAware::class);
     });
 });

@@ -14,6 +14,10 @@ describe('PaymentGenericStatusService', function () {
         $this->paymentGenericStatusService = app(PaymentGenericStatusService::class);
     });
 
+    test('should implement ModelAware interface', function () {
+        expect($this->paymentGenericStatusService)->toBeInstanceOf(ModelAware::class);
+    });
+
     test('can find cached by id', function () {
         $paymentGenericStatus = PaymentGenericStatus::factory()->create();
 
