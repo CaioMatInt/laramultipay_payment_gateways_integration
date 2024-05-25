@@ -24,7 +24,7 @@ class PaymentGatewayKeyController extends Controller
 
     public function store(StorePaymentGatewayKeyRequest $request): PaymentGatewayKeyResource
     {
-        $dto = PaymentGatewayKeyCreationDto::fromRequest($request->only(['key', 'type', 'payment_gateway_id']));
+        $dto = new PaymentGatewayKeyCreationDto($request->only(['key', 'type', 'payment_gateway_id']));
 
         $paymentGatewayKey = $this->paymentGatewayKeyService->create($dto);
 

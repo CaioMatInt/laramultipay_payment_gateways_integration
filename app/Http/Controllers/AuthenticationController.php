@@ -28,7 +28,7 @@ class AuthenticationController extends Controller
 
     public function login(LoginRequest $request): Response
     {
-        $loginDto = LoginDto::fromRequest($request->only('email', 'password'));
+        $loginDto = new LoginDto($request->only('email', 'password'));
         $this->userService->login($loginDto);
         $userToken = $this->userService->createUserToken();
         return response(UserLoginResource::make([
@@ -58,7 +58,7 @@ class AuthenticationController extends Controller
 
     public function register(RegisterRequest $request): Response
     {
-        $userCreationData = UserCreationDto::fromRequest($request->only('name', 'email', 'password'));
+        $userCreationData = new UserCreationDto($request->only('name', 'email', 'password'));
         $this->userService->create($userCreationData);
         Company::create([
             'name' => $request->company_name

@@ -42,7 +42,7 @@ class PaymentController extends Controller
     {
         $paymentCreationData = $request->only(['name', 'amount', 'currency', 'payment_method', 'payment_gateway']);
         $paymentCreationData['expires_at'] = Carbon::parse($request->expires_at);
-        $paymentCreationDto = PaymentCreationDto::fromRequest($paymentCreationData);
+        $paymentCreationDto = new PaymentCreationDto($paymentCreationData);
 
         $payment = $this->service->create($paymentCreationDto);
 

@@ -4,20 +4,22 @@ namespace App\DTOs;
 
 abstract class BaseDto
 {
+
     /**
-     * Creates an instance of the called class from the provided request data.
-     *
-     * This method uses reflection to dynamically instantiate the subclass (Dto)
-     * that called this method, passing the given data to the constructor.
+     * BaseDto constructor.
      *
      * @param array $data
-     * @throws \ReflectionException
+     * @return static
      */
-    public static function fromRequest(array $data): self
+    public function __construct(array $data)
     {
-        $calledClass = get_called_class();
-        $reflectionClass = new \ReflectionClass($calledClass);
-        return $reflectionClass->newInstance($data);
+        $reflectionClass = new \ReflectionClass($this);
+        foreach ($reflectionClass->getProperties() as $property) {
+            $propertyName = $property->getName();
+            if (array_key_exists($propertyName, $data)) {
+                $this->{$propertyName} = $data[$propertyName];
+            }
+        }
     }
 
     /**
