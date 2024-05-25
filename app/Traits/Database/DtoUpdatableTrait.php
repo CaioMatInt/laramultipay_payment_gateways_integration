@@ -14,8 +14,8 @@ trait DtoUpdatableTrait
      * Update a model by its primary key.
      *
      * @param int $id
-     * @param array $data
-     * @return void
+     * @param BaseDto $dto
+     * @return Model
      */
     public function updateWithDto(int $id, BaseDto $dto): Model
     {
