@@ -8,8 +8,8 @@ use App\DTOs\ChargeableItemCategory\ChargeableItemCategoryDto;
 use App\Models\ChargeableItemCategory;
 use App\Traits\Database\CacheableFinderTrait;
 use App\Traits\Database\DestroyableTrait;
-use App\Traits\Database\PaginatorByCompanyTrait;
 use App\Traits\Database\DtoUpdatableTrait;
+use App\Traits\Database\PaginatorByCompanyTrait;
 
 class ChargeableItemCategoryService implements ModelAware, ChargeableItemCategoryUpdatableInterface
 {

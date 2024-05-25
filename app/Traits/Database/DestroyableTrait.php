@@ -2,8 +2,6 @@
 
 namespace App\Traits\Database;
 
-use Illuminate\Support\Facades\Cache;
-
 trait DestroyableTrait
 {
     use ModelAccessorTrait;
