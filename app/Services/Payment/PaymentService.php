@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Services\PaymentGateway\PaymentGatewayService;
 use App\Services\PaymentGenericStatus\PaymentGenericStatusService;
 use App\Services\PaymentMethod\PaymentMethodService;
+use App\Traits\Database\CacheableFinderByCompanyTrait;
 use App\Traits\Database\PaginatorByCompanyTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
@@ -17,7 +18,7 @@ use Illuminate\Support\Str;
 
 class PaymentService implements ModelAware
 {
-    use PaginatorByCompanyTrait;
+    use PaginatorByCompanyTrait, CacheableFinderByCompanyTrait;
 
     public function __construct(
         private readonly Payment $model,
@@ -43,12 +44,9 @@ class PaymentService implements ModelAware
         return $this->model->create($data);
     }
 
-    public function findCached(string $uuid): Payment
+    protected function getFindWithCompanyCacheKey(int $id): string
     {
-        //@@TODO: Clear cache via Event/Listener
-        return Cache::rememberForever(config('cache_keys.payment.by_uuid') . $uuid, function () use ($uuid) {
-            return $this->model->where('uuid', $uuid)->firstOrFail();
-        });
+        return config('cache_keys.payment.with_company_by_uuid') . $id;
     }
 
     /**
@@ -56,7 +54,7 @@ class PaymentService implements ModelAware
      */
     public function redirectToGatewayPaymentPage(string $paymentUuid): RedirectResponse
     {
-        $payment = $this->findCached($paymentUuid);
+        $payment = $this->findCachedByUserCompanyId($paymentUuid);
 
         if (!$payment || !$payment->payment_gateway_id) {
             abort(404);

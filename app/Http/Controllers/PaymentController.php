@@ -32,7 +32,7 @@ class PaymentController extends Controller
     //@@TODO: Check if this Request is really necessary.
     public function show(ShowPaymentRequest $request): PaymentResource
     {
-        $payment = $this->service->findCached($request->uuid);
+        $payment = $this->service->findCachedByUserCompanyId($request->uuid);
 
         return new PaymentResource(
             $payment

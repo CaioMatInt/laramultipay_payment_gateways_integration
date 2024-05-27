@@ -28,7 +28,7 @@ class ChargeableItemController extends Controller
 
     public function show(int $id): ChargeableItemResource
     {
-        $chargeableItem = $this->service->findCached($id);
+        $chargeableItem = $this->service->findCachedByUserCompanyId($id);
         return new ChargeableItemResource($chargeableItem);
     }
 

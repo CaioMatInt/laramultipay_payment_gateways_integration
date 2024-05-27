@@ -9,7 +9,6 @@ use App\Http\Requests\ChargeableItemPrice\StoreChargeableItemPriceRequest;
 use App\Http\Requests\ChargeableItemPrice\UpdateChargeableItemPriceRequest;
 use App\Http\Resources\ChargeableItemPrice\ChargeableItemPriceResource;
 use App\Services\ChargeableItemPrice\ChargeableItemPriceService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 

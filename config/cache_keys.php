@@ -14,6 +14,7 @@ return [
     ],
     'payment' => [
         'by_uuid' => 'payment_uuid_',
+        'with_company_by_uuid' => 'chargeable_item_price_with_company_uuid_',
     ],
     'payment_gateway' => [
         'by_id' => 'payment_gateway_id_',

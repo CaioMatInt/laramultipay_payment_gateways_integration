@@ -36,7 +36,10 @@ class ChargeableItemPriceService implements ModelAware, ChargeableItemPriceUpdat
     //@@TODO: Add Caching
     public function findByIdAndChargeableItemId(int $id, int $chargeableItemId): ChargeableItemPrice
     {
-        return $this->model->where('id', $id)->where('chargeable_item_id', $chargeableItemId)->firstOrFail();
+        return $this->model->where('id', $id)
+            ->where('chargeable_item_id', $chargeableItemId)
+            ->where('company_id', auth()->user()->company_id)
+            ->firstOrFail();
     }
 
     public function store(ChargeableItemPriceDto $dto): ChargeableItemPrice
