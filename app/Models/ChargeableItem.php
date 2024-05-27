@@ -15,14 +15,13 @@ class ChargeableItem extends Model
     protected $fillable = [
         'name',
         'description',
-        'currency',
-        'price',
         'chargeable_item_category_id',
+        'company_id',
     ];
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(ChargeableItemCategory::class);
+        return $this->belongsTo(ChargeableItemCategory::class, 'chargeable_item_category_id', 'id');
     }
 
     public function payments(): BelongsToMany
@@ -30,5 +29,10 @@ class ChargeableItem extends Model
         return $this->belongsToMany(Payment::class, 'chargeable_item_payment')
             ->withPivot('quantity', 'price')
             ->withTimestamps();
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }

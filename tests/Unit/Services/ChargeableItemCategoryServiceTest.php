@@ -3,9 +3,11 @@
 use App\Contracts\ChargeableItemCategory\ChargeableItemCategoryUpdatableInterface;
 use App\Contracts\ModelAware;
 use App\DTOs\ChargeableItemCategory\ChargeableItemCategoryDto;
+use App\Models\ChargeableItemCategory;
 use App\Services\ChargeableItemCategory\ChargeableItemCategoryService;
 use App\Traits\Database\CacheableFinderTrait;
 use App\Traits\Database\DestroyableTrait;
+use App\Traits\Database\DtoStorableTrait;
 use App\Traits\Database\DtoUpdatableTrait;
 use App\Traits\Database\PaginatorByCompanyTrait;
 use Tests\Traits\ClassReflectionTrait;
@@ -47,22 +49,50 @@ describe('ChargeableItemCategoryServiceTest', function () {
             ->toBeTrue();
     });
 
+    test('ensure that its using the DtoStorableTrait', function () {
+        expect(in_array(DtoStorableTrait::class, class_uses_recursive($this->chargeableItemService)))
+            ->toBeTrue();
+    });
+
     test('should implement ModelAware interface', function () {
         expect($this->chargeableItemCategoryService instanceof ModelAware)
             ->toBeTrue();
     });
 
-    test('can create a chargeable item', function () {
+    test('should be using storeWithDtoAndAuthUserCompanyId to create a new chargeable item category', function () {
         $this->actingAs($this->userCompanyAdmin);
 
-        $dto = new ChargeableItemCategoryDto([
-            'name' => 'name',
-        ]);
+        $dto = new ChargeableItemCategoryDto([]);
 
-        $chargeableItemCategory = $this->chargeableItemCategoryService->store($dto);
+        $mockService = Mockery::mock(ChargeableItemCategoryService::class)->makePartial();
+        $expectedResult = new ChargeableItemCategory();
 
-        expect($chargeableItemCategory->name)->toBe($dto->name)
-            ->and($chargeableItemCategory->company_id)->toBe($this->userCompanyAdmin->company_id);
+        $mockService->shouldReceive('storeWithDtoAndAuthUserCompanyId')
+            ->once()
+            ->andReturn($expectedResult);
+
+        $result = $mockService->store($dto);
+
+        expect($result)->toBe($expectedResult);
+    });
+
+    test('should be using updateWithDto to update a chargeable item category', function () {
+        $this->actingAs($this->userCompanyAdmin);
+
+        $id = 1;
+        $dto = new ChargeableItemCategoryDto([]);
+
+        $mockService = Mockery::mock(ChargeableItemCategoryService::class)->makePartial();
+        $expectedResult = new ChargeableItemCategory();
+
+        $mockService->shouldReceive('updateWithDto')
+            ->once()
+            ->with($id, $dto)
+            ->andReturn($expectedResult);
+
+        $result = $mockService->update($id, $dto);
+
+        expect($result)->toBe($expectedResult);
     });
 
     test('should return the correct cache key', function () {

@@ -25,4 +25,7 @@ return [
     'chargeable_item_categories' => [
         'by_id' => 'chargeable_item_category_id_',
     ],
+    'chargeable_items' => [
+        'by_id' => 'chargeable_item_id_',
+    ],
 ];

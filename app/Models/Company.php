@@ -34,4 +34,14 @@ class Company extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function chargeableItemCategories(): HasMany
+    {
+        return $this->hasMany(ChargeableItemCategory::class);
+    }
+
+    public function chargeableItems(): HasMany
+    {
+        return $this->hasMany(ChargeableItem::class);
+    }
 }

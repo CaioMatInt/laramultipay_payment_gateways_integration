@@ -216,7 +216,9 @@ describe('chargeable-item-categories.update', function () {
         $response->assertJson([
             'data' => [
                 'id' => $chargeableItemCategory->id,
-                'name' => $newName
+                'name' => $newName,
+                'created_at' => $chargeableItemCategory->created_at->format('Y-m-d\TH:i:s.u\Z'),
+                'updated_at' => $chargeableItemCategory->updated_at->format('Y-m-d\TH:i:s.u\Z')
             ]
         ]);
     });
