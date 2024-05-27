@@ -19,7 +19,7 @@ class ChargeableItemPriceFactory extends Factory
             'price' => $this->faker->randomNumber(),
             'currency' => $this->faker->randomElement(PaymentCurrencyEnum::values()),
             'chargeable_item_id' => ChargeableItem::factory(),
-            'company' => null,
+            'company_id' => null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

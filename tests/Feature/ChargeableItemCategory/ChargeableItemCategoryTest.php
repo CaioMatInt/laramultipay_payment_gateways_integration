@@ -54,7 +54,7 @@ describe('chargeable-item-categories.index', function () {
         }
     });
 
-    test('should return empty data array if there are no payment gateway keys', function () {
+    test('should return empty data array if there are no chargeable item categories', function () {
         $this->actingAs($this->userCompanyAdmin);
 
         $response = $this->getJson(route('chargeable-item-category.index'));

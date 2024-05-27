@@ -48,9 +48,9 @@ class ShowChargeableItemPriceRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'chargeable_item_id.required' => 'Chargeable item id parameter is required',
-            'chargeable_item_id.integer' => 'Chargeable item id parameter must be an integer',
-            'chargeable_item_id.exists' => 'The chargeable item does not exist',
+            'chargeable_item_id.required' => 'Chargeable item id parameter is required.',
+            'chargeable_item_id.integer' => 'Chargeable item id parameter must be an integer.',
+            'chargeable_item_id.exists' => 'The chargeable item does not exist.',
         ];
     }
 }
