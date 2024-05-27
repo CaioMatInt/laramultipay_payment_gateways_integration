@@ -29,9 +29,10 @@ class PaymentController extends Controller
         return PaymentResource::collection($payments);
     }
 
-    public function show(ShowPaymentRequest $request, string $uuid): PaymentResource
+    //@@TODO: Check if this Request is really necessary.
+    public function show(ShowPaymentRequest $request): PaymentResource
     {
-        $payment = $this->service->findCached($uuid);
+        $payment = $this->service->findCached($request->uuid);
 
         return new PaymentResource(
             $payment

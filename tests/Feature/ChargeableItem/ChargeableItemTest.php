@@ -93,6 +93,8 @@ describe('chargeable-items.show', function () {
         $response->assertNotFound();
     });
 
+    //@@TODO: Add test: cant access other company chargeable item
+
     test('should return chargeable item', function () {
         $this->actingAs($this->userCompanyAdmin);
 

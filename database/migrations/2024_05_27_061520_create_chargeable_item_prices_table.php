@@ -2,6 +2,7 @@
 
 use App\Enums\Payment\PaymentCurrencyEnum;
 use App\Models\ChargeableItem;
+use App\Models\Company;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->integer('price');
             $table->enum('currency', PaymentCurrencyEnum::values());
             $table->foreignIdFor(ChargeableItem::class);
+            $table->foreignIdFor(Company::class);
             $table->softDeletes();
             $table->timestamps();
         });

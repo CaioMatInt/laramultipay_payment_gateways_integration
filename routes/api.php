@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChargeableItemCategoryController;
 use App\Http\Controllers\ChargeableItemController;
+use App\Http\Controllers\ChargeableItemPriceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentGatewayKeyController;
 use App\Http\Controllers\TransactionController;
@@ -62,5 +63,15 @@ Route::prefix('chargeable-items')->middleware('auth:sanctum')->group(function ()
     Route::post('', [ChargeableItemController::class, 'store'])->name('chargeable-item.store');
     Route::patch('/{id}', [ChargeableItemController::class, 'update'])->name('chargeable-item.update');
     Route::delete('/{id}', [ChargeableItemController::class, 'destroy'])->name('chargeable-item.destroy');
+
+    Route::prefix('/{chargeable_item_id}/prices')->group(function () {
+        Route::get('', [ChargeableItemPriceController::class, 'index'])->name('chargeable-item-price.index');
+        Route::get('/{id}', [ChargeableItemPriceController::class, 'show'])->name('chargeable-item-price.show');
+        Route::post('', [ChargeableItemPriceController::class, 'store'])->name('chargeable-item-price.store');
+        Route::patch('/{id}', [ChargeableItemPriceController::class, 'update'])->name('chargeable-item-price.update');
+        Route::delete('/{id}', [ChargeableItemPriceController::class, 'destroy'])->name('chargeable-item-price.destroy');
+    });
 });
+
+
 

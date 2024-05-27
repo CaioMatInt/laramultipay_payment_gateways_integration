@@ -24,8 +24,14 @@ return [
     ],
     'chargeable_item_categories' => [
         'by_id' => 'chargeable_item_category_id_',
+        'with_company_by_id' => 'chargeable_item_category_with_company_id_',
     ],
     'chargeable_items' => [
         'by_id' => 'chargeable_item_id_',
+        'with_company_by_id' => 'chargeable_item_with_company_id_',
+    ],
+    'chargeable_item_prices' => [
+        'by_id' => 'chargeable_item_price_id_',
+        'with_company_by_id' => 'chargeable_item_price_with_company_id_',
     ],
 ];

@@ -44,4 +44,9 @@ class Company extends Model
     {
         return $this->hasMany(ChargeableItem::class);
     }
+
+    public function chargeableItemPrices(): HasMany
+    {
+        return $this->hasMany(ChargeableItemPrice::class);
+    }
 }

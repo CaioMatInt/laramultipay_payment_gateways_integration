@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\ChargeableItem;
+namespace App\Http\Requests\ChargeableItemPrice;
 
 use App\Enums\Payment\PaymentCurrencyEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreChargeableItemRequest extends FormRequest
+class UpdateChargeableItemPriceRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -21,21 +21,15 @@ class StoreChargeableItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
+            'price' => 'required|integer',
+            'currency' => 'required|string|in:'.implode(',', PaymentCurrencyEnum::values()),
+            'chargeable_item_id' => [
                 'required',
-                'string',
-                'max:255',
-                Rule::unique('chargeable_items')->where(function ($query) {
+                'integer',
+                Rule::exists('chargeable_items', 'id')->where(function ($query) {
                     return $query->where('company_id', optional(auth()->user())->company_id);
                 }),
-            ],
-            'description' => 'sometimes|string',
-            'chargeable_item_category_id' => [
-                'required',
-                Rule::exists('chargeable_item_categories', 'id')->where(function ($query) {
-                    return $query->where('company_id', optional(auth()->user())->company_id);
-                }),
-            ],
+            ]
         ];
     }
 

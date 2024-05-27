@@ -240,3 +240,6 @@ describe('payments.store', function () {
         $response->assertJsonFragment(['The payment method must be one of the following: '.$validPaymentMethods]);
     });
 });
+
+
+//@@TODO: Add missing tests after defining how the crud is gonna be implemented

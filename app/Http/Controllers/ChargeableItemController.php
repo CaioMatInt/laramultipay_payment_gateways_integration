@@ -28,8 +28,8 @@ class ChargeableItemController extends Controller
 
     public function show(int $id): ChargeableItemResource
     {
-        $chargeableItemCategory = $this->service->findCached($id);
-        return new ChargeableItemResource($chargeableItemCategory);
+        $chargeableItem = $this->service->findCached($id);
+        return new ChargeableItemResource($chargeableItem);
     }
 
     public function store(StoreChargeableItemRequest $request): ChargeableItemResource
@@ -39,8 +39,8 @@ class ChargeableItemController extends Controller
             'description',
             'chargeable_item_category_id'
         ));
-        $chargeableItemCategory = $this->service->store($dto);
-        return new ChargeableItemResource($chargeableItemCategory);
+        $chargeableItem = $this->service->store($dto);
+        return new ChargeableItemResource($chargeableItem);
     }
 
     public function update(UpdateChargeableItemRequest $request, int $id): ChargeableItemResource
@@ -50,8 +50,8 @@ class ChargeableItemController extends Controller
             'description',
             'chargeable_item_category_id'
         ));
-        $chargeableItemCategory = $this->service->update($id, $dto);
-        return new ChargeableItemResource($chargeableItemCategory);
+        $chargeableItem = $this->service->update($id, $dto);
+        return new ChargeableItemResource($chargeableItem);
     }
 
     public function destroy(int $id): Response

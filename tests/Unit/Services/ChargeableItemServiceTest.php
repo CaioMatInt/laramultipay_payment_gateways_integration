@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\ChargeableItem\ChargeableItemStorableInterface;
 use App\Contracts\ChargeableItem\ChargeableItemUpdatableInterface;
 use App\Contracts\ModelAware;
 use App\DTOs\ChargeableItem\ChargeableItemDto;
@@ -17,7 +18,7 @@ uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 uses(UserTrait::class);
 uses(ClassReflectionTrait::class);
 
-describe('chargeableItemServiceTest', function () {
+describe('ChargeableItemServiceTest', function () {
 
     beforeEach(function () {
         $this->chargeableItemService = app(ChargeableItemService::class);
@@ -51,6 +52,11 @@ describe('chargeableItemServiceTest', function () {
 
     test('should implement ChargeableItemUpdatableInterface interface', function () {
         expect($this->chargeableItemService instanceof ChargeableItemUpdatableInterface)
+            ->toBeTrue();
+    });
+
+    test('should implement ChargeableItemStorableInterface interface', function () {
+        expect($this->chargeableItemService instanceof ChargeableItemStorableInterface)
             ->toBeTrue();
     });
 

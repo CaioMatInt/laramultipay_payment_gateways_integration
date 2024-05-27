@@ -35,4 +35,9 @@ class ChargeableItem extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function prices(): BelongsToMany
+    {
+        return $this->belongsToMany(ChargeableItemPrice::class, 'chargeable_item_prices');
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\ChargeableItemCategory\ChargeableItemCategoryStorableInterface;
 use App\Contracts\ChargeableItemCategory\ChargeableItemCategoryUpdatableInterface;
 use App\Contracts\ModelAware;
 use App\DTOs\ChargeableItemCategory\ChargeableItemCategoryDto;
@@ -46,6 +47,11 @@ describe('ChargeableItemCategoryServiceTest', function () {
 
     test('should implement ChargeableItemCategoryUpdatableInterface interface', function () {
         expect($this->chargeableItemCategoryService instanceof ChargeableItemCategoryUpdatableInterface)
+            ->toBeTrue();
+    });
+
+    test('should implement ChargeableItemCategoryStorableInterface interface', function () {
+        expect($this->chargeableItemCategoryService instanceof ChargeableItemCategoryStorableInterface)
             ->toBeTrue();
     });
 

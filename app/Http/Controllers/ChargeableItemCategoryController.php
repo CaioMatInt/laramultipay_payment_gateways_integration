@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTOs\ChargeableItemCategory\ChargeableItemCategoryDto;
+use App\Http\Requests\ChargeableItemCategory\ShowChargeableItemCategoryRequest;
 use App\Http\Requests\ChargeableItemCategory\StoreChargeableItemCategoryRequest;
 use App\Http\Requests\ChargeableItemCategory\UpdateChargeableItemCategoryRequest;
 use App\Http\Requests\PaginatedRequest;
@@ -28,7 +29,7 @@ class ChargeableItemCategoryController extends Controller
 
     public function show(int $id): ChargeableItemCategoryResource
     {
-        $chargeableItemCategory = $this->service->findCached($id);
+        $chargeableItemCategory = $this->service->findCachedByUserCompanyId($id);
         return new ChargeableItemCategoryResource($chargeableItemCategory);
     }
 
